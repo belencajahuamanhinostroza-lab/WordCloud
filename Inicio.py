@@ -718,32 +718,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-    /* =====================================================
-       SCROLLBAR
-       ===================================================== */
-
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #f2f5fb;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #c2cceb;
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #9daada;
-    }
-
-</style>
-""", unsafe_allow_html=True)
-
-
 # ─────────────────────────────────────────────
 # STOPWORDS
 # ─────────────────────────────────────────────
