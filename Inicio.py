@@ -28,21 +28,38 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-* {
+html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
 .stApp {
-    background: #f6f1ef;
+    background-color: #151515;
 }
 
-/* CONTENEDOR */
+/* CONTENEDOR PRINCIPAL */
 
 .main .block-container {
     max-width: 1200px;
-    padding: 35px 45px 60px 45px;
+    padding: 40px 45px 60px 45px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+section[data-testid="stSidebar"] {
+    background-color: #101010 !important;
+}
+
+section[data-testid="stSidebar"] * {
+    color: #eeeeee;
+}
+
+section[data-testid="stSidebar"] hr {
+    border-color: #303030;
 }
 
 
@@ -51,57 +68,68 @@ st.markdown("""
    ========================================================= */
 
 .hero {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 35px 40px;
-    margin-bottom: 25px;
-    border: 1px solid #eadfdb;
+    padding: 20px 0 40px 0;
 }
 
 .eyebrow {
-    color: #f26b5e;
+    color: #65c7f5;
     font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.hero-title {
-    color: #222222;
-    font-size: 48px;
-    font-weight: 700;
-    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: 3px;
     margin-bottom: 12px;
 }
 
+.hero-title {
+    color: #ffffff;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 18px;
+}
+
 .hero-title span {
-    color: #f26b5e;
+    color: #ffe45b;
 }
 
 .hero-text {
-    color: #666666;
+    color: #aaaaaa;
     font-size: 17px;
     line-height: 1.6;
-    max-width: 650px;
+    max-width: 600px;
 }
 
 
 /* =========================================================
-   SIDEBAR
+   TARJETAS
    ========================================================= */
 
-[data-testid="stSidebar"] {
-    background: #fffaf8 !important;
-    border-right: 1px solid #eadfdb;
+.section-card {
+    background-color: #1d1d1d;
+    border: 1px solid #303030;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 20px;
 }
 
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 {
-    color: #252525 !important;
+.wc-container {
+    background-color: #1d1d1d;
+    border: 1px solid #303030;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
-[data-testid="stSidebar"] label {
-    color: #555555 !important;
+
+/* =========================================================
+   TEXTOS
+   ========================================================= */
+
+h1, h2, h3 {
+    color: #ffffff !important;
+}
+
+p {
+    color: #b5b5b5;
 }
 
 
@@ -109,18 +137,21 @@ st.markdown("""
    INPUTS
    ========================================================= */
 
-textarea,
-input[type="text"] {
-    background: #ffffff !important;
-    color: #222222 !important;
-    border: 1px solid #d9cfcb !important;
+textarea {
+    background-color: #202020 !important;
+    color: #ffffff !important;
+    border: 1px solid #383838 !important;
     border-radius: 10px !important;
 }
 
-textarea:focus,
-input[type="text"]:focus {
-    border-color: #f26b5e !important;
-    box-shadow: 0 0 0 2px rgba(242,107,94,0.15) !important;
+input {
+    background-color: #202020 !important;
+    color: #ffffff !important;
+}
+
+textarea::placeholder,
+input::placeholder {
+    color: #777777 !important;
 }
 
 
@@ -128,10 +159,10 @@ input[type="text"]:focus {
    SELECT
    ========================================================= */
 
-[data-baseweb="select"] > div {
-    background: #ffffff !important;
-    border: 1px solid #d9cfcb !important;
-    border-radius: 10px !important;
+div[data-baseweb="select"] > div {
+    background-color: #202020 !important;
+    color: #ffffff !important;
+    border-color: #383838 !important;
 }
 
 
@@ -140,43 +171,24 @@ input[type="text"]:focus {
    ========================================================= */
 
 .stButton > button {
-    background: #f26b5e !important;
-    color: #ffffff !important;
+    background-color: #ffe45b !important;
+    color: #151515 !important;
     border: none !important;
-    border-radius: 10px !important;
-    font-weight: 700 !important;
+    border-radius: 9px !important;
+    font-weight: 800 !important;
     min-height: 45px !important;
 }
 
 .stButton > button:hover {
-    background: #df594d !important;
+    background-color: #fff080 !important;
 }
 
 [data-testid="stDownloadButton"] button {
-    background: #333333 !important;
-    color: white !important;
-    border-radius: 10px !important;
-}
-
-
-/* =========================================================
-   CARDS
-   ========================================================= */
-
-.section-card {
-    background: #ffffff;
-    border: 1px solid #eadfdb;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 18px;
-}
-
-.info-item {
-    padding: 13px 15px;
-    margin-bottom: 8px;
-    background: #faf8f7;
-    border: 1px solid #eee6e2;
-    border-radius: 10px;
+    background-color: #65c7f5 !important;
+    color: #111111 !important;
+    border: none !important;
+    border-radius: 9px !important;
+    font-weight: 800 !important;
 }
 
 
@@ -185,61 +197,57 @@ input[type="text"]:focus {
    ========================================================= */
 
 [data-testid="metric-container"] {
-    background: #ffffff;
-    border: 1px solid #eadfdb;
+    background-color: #1d1d1d;
+    border: 1px solid #303030;
     border-radius: 12px;
     padding: 15px;
 }
 
 [data-testid="metric-container"] label {
-    color: #777777 !important;
+    color: #888888 !important;
 }
 
 [data-testid="stMetricValue"] {
-    color: #222222 !important;
+    color: #ffffff !important;
 }
 
 
 /* =========================================================
-   NUBE
-   ========================================================= */
-
-.wc-container {
-    background: #ffffff;
-    border: 1px solid #eadfdb;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 18px;
-}
-
-
-/* =========================================================
-   FRECUENCIA
+   FRECUENCIAS
    ========================================================= */
 
 .freq-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 12px;
+    padding: 10px 12px;
     margin: 5px 0;
-    background: #ffffff;
-    border: 1px solid #eee6e2;
+    background-color: #1d1d1d;
+    border: 1px solid #303030;
     border-radius: 8px;
 }
 
 .freq-bar {
     height: 8px;
-    background: #f26b5e;
+    background-color: #ffe45b;
     border-radius: 10px;
 }
 
 .rank-tag {
-    background: #f5efed;
+    background-color: #292929;
+    color: #999999;
     border-radius: 5px;
     padding: 3px 7px;
     font-size: 12px;
-    color: #777777;
+}
+
+
+/* =========================================================
+   TABLA
+   ========================================================= */
+
+[data-testid="stDataFrame"] {
+    border: 1px solid #303030;
 }
 
 
@@ -247,25 +255,19 @@ input[type="text"]:focus {
    EXPANDER
    ========================================================= */
 
-div[data-testid="stExpander"] {
-    background: #ffffff !important;
-    border: 1px solid #eadfdb !important;
+[data-testid="stExpander"] {
+    background-color: #1d1d1d !important;
+    border: 1px solid #303030 !important;
     border-radius: 10px !important;
 }
 
 
 /* =========================================================
-   TEXTO
+   DIVISORES
    ========================================================= */
 
-h1,
-h2,
-h3 {
-    color: #222222 !important;
-}
-
-p {
-    color: #555555;
+hr {
+    border-color: #303030 !important;
 }
 
 
@@ -276,16 +278,17 @@ p {
 @media (max-width: 800px) {
 
     .main .block-container {
-        padding: 25px 18px;
+        padding: 25px 18px 40px 18px;
     }
 
     .hero-title {
-        font-size: 38px;
+        font-size: 40px;
     }
 
-    .hero {
-        padding: 25px;
+    .hero-text {
+        font-size: 16px;
     }
+
 }
 
 </style>
@@ -551,7 +554,6 @@ with st.sidebar:
 
     texto_input = ""
 
-
     if fuente == "✍️ Escribir / Pegar":
 
         texto_input = st.text_area(
@@ -594,7 +596,6 @@ with st.sidebar:
                     .tolist()
                 )
 
-
     st.divider()
 
     st.markdown("### PROCESAMIENTO")
@@ -620,7 +621,6 @@ with st.sidebar:
         "Excluir palabras",
         placeholder="ej: también, aquí"
     )
-
 
     st.divider()
 
@@ -735,7 +735,6 @@ if not generar:
             "</div>",
             unsafe_allow_html=True
         )
-
 
     with col2:
 
@@ -991,7 +990,7 @@ with col1:
                 <span style="
                     min-width:130px;
                     font-weight:600;
-                    color:#222;
+                    color:#ffffff;
                 ">
                     {palabra}
                 </span>
@@ -1002,7 +1001,7 @@ with col1:
                 ></div>
 
                 <span style="
-                    color:#555;
+                    color:#bbbbbb;
                     font-weight:600;
                 ">
                     {frecuencia}
