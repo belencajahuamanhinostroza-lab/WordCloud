@@ -37,7 +37,7 @@ st.set_page_config(
 # ESTILO SIMPLE Y LEGIBLE
 # =========================================================
 
-st.markdown(
+  st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
