@@ -29,244 +29,695 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# ESTILOS — diseño profesional / corporativo
+# ESTILOS — interfaz moderna azul / lila
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    /* =====================================================
+       TIPOGRAFÍA
+       ===================================================== */
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Poppins', sans-serif !important;
     }
 
-    /* Fondo general gris muy claro */
     .stApp {
-        background-color: #f4f5f7;
+        background:
+            radial-gradient(circle at 85% 5%, rgba(155, 185, 255, 0.25), transparent 25%),
+            radial-gradient(circle at 10% 30%, rgba(200, 180, 255, 0.18), transparent 25%),
+            #f8faff;
     }
 
-    /* Sidebar blanco con borde sutil */
+
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
+
     [data-testid="stSidebar"] {
-        background-color: #ffffff !important;
-        border-right: 1px solid #dde1e7;
+        background:
+            linear-gradient(
+                180deg,
+                #ffffff 0%,
+                #f4f7ff 55%,
+                #eef3ff 100%
+            ) !important;
+
+        border-right: 1px solid #e1e8f8 !important;
     }
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #161a1d !important;
+
+    [data-testid="stSidebar"] h2 {
+        color: #202a44 !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.8px !important;
+        font-size: 1.05rem !important;
+        letter-spacing: -0.3px !important;
+        text-transform: none !important;
     }
+
+    [data-testid="stSidebar"] h3 {
+        color: #536180 !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 0.78rem !important;
+        letter-spacing: 0.8px !important;
+        text-transform: uppercase !important;
+    }
+
     [data-testid="stSidebar"] label {
-        color: #4a5568 !important;
-        font-size: 0.85rem !important;
+        color: #536180 !important;
+        font-size: 0.82rem !important;
         font-weight: 500 !important;
     }
+
     [data-testid="stSidebar"] p {
-        color: #6b7280 !important;
-        font-size: 0.88rem !important;
+        color: #71809d !important;
+        font-size: 0.84rem !important;
     }
+
     [data-testid="stSidebar"] hr {
-        border-color: #e5e7eb !important;
-        margin: 16px 0 !important;
+        border-color: #dfe6f5 !important;
+        margin: 18px 0 !important;
     }
 
-    /* Inputs */
-    textarea, input[type="text"] {
-        background-color: #ffffff !important;
-        border: 1px solid #d1d5db !important;
-        border-radius: 6px !important;
-        color: #111827 !important;
-        font-family: 'Inter', sans-serif !important;
-        font-size: 0.9rem !important;
-    }
-    textarea:focus, input[type="text"]:focus {
-        border-color: #374151 !important;
-        box-shadow: 0 0 0 2px rgba(55,65,81,0.12) !important;
+
+    /* =====================================================
+       INPUTS
+       ===================================================== */
+
+    textarea,
+    input[type="text"] {
+        background: #ffffff !important;
+        border: 1px solid #dce4f5 !important;
+        border-radius: 14px !important;
+        color: #202a44 !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.86rem !important;
+        box-shadow: 0 3px 12px rgba(74, 104, 170, 0.05) !important;
     }
 
-    /* Selectbox */
+    textarea::placeholder,
+    input::placeholder {
+        color: #a0abc0 !important;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus {
+        border-color: #7d9cff !important;
+        box-shadow:
+            0 0 0 3px rgba(125, 156, 255, 0.13),
+            0 4px 14px rgba(74, 104, 170, 0.08) !important;
+    }
+
+
+    /* =====================================================
+       SELECTBOX
+       ===================================================== */
+
     [data-baseweb="select"] > div {
         background: #ffffff !important;
-        border: 1px solid #d1d5db !important;
-        border-radius: 6px !important;
-        color: #111827 !important;
-        font-size: 0.9rem !important;
+        border: 1px solid #dce4f5 !important;
+        border-radius: 12px !important;
+        color: #202a44 !important;
+        font-size: 0.84rem !important;
+        box-shadow: 0 2px 10px rgba(74, 104, 170, 0.04) !important;
     }
 
-    /* Títulos */
+    [data-baseweb="select"] > div:hover {
+        border-color: #9ab2ff !important;
+    }
+
+
+    /* =====================================================
+       TÍTULOS
+       ===================================================== */
+
     h1 {
-        font-family: 'Inter', sans-serif !important;
-        color: #111827 !important;
+        font-family: 'Poppins', sans-serif !important;
+        color: #202a44 !important;
         font-weight: 700 !important;
-        letter-spacing: -0.5px !important;
-    }
-    h2, h3 {
-        font-family: 'Inter', sans-serif !important;
-        color: #1f2937 !important;
-        font-weight: 600 !important;
-    }
-    p, li {
-        color: #374151 !important;
-        font-size: 0.95rem !important;
-        line-height: 1.65 !important;
+        letter-spacing: -1px !important;
     }
 
-    /* Botón principal — antracita sólido */
-    .stButton > button {
-        background: #1f2937 !important;
-        color: #ffffff !important;
-        border: none !important;
-        border-radius: 6px !important;
-        font-family: 'Inter', sans-serif !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        letter-spacing: 0.3px !important;
-        padding: 0.6rem 1.4rem !important;
-        width: 100% !important;
-        transition: background 0.2s ease, box-shadow 0.2s ease !important;
-    }
-    .stButton > button:hover {
-        background: #111827 !important;
-        box-shadow: 0 2px 12px rgba(17,24,39,0.25) !important;
+    h2 {
+        font-family: 'Poppins', sans-serif !important;
+        color: #26324f !important;
+        font-weight: 700 !important;
     }
 
-    /* Botón descarga — gris slate */
-    [data-testid="stDownloadButton"] button {
-        background: #374151 !important;
-        color: #ffffff !important;
-        border: none !important;
-        border-radius: 6px !important;
+    h3 {
+        font-family: 'Poppins', sans-serif !important;
+        color: #35415f !important;
         font-weight: 600 !important;
+    }
+
+    p,
+    li {
+        color: #687694 !important;
+        font-family: 'Poppins', sans-serif !important;
         font-size: 0.88rem !important;
-        transition: background 0.2s !important;
-    }
-    [data-testid="stDownloadButton"] button:hover {
-        background: #1f2937 !important;
+        line-height: 1.7 !important;
     }
 
-    /* Métricas */
-    [data-testid="metric-container"] {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-top: 3px solid #374151;
-        border-radius: 8px;
-        padding: 18px 22px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-    [data-testid="metric-container"] label {
-        color: #6b7280 !important;
-        font-size: 0.78rem !important;
+
+    /* =====================================================
+       BOTONES PRINCIPALES
+       ===================================================== */
+
+    .stButton > button {
+        background: linear-gradient(
+            135deg,
+            #658cff 0%,
+            #8069ed 100%
+        ) !important;
+
+        color: #ffffff !important;
+
+        border: none !important;
+        border-radius: 14px !important;
+
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 600 !important;
+        font-size: 0.84rem !important;
+
+        letter-spacing: 0.1px !important;
+
+        padding: 0.72rem 1.3rem !important;
+
+        min-height: 44px !important;
+
+        box-shadow:
+            0 6px 18px rgba(104, 126, 235, 0.28) !important;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            filter 0.2s ease !important;
+    }
+
+    .stButton > button:hover {
+        background: linear-gradient(
+            135deg,
+            #557dff 0%,
+            #735ce5 100%
+        ) !important;
+
+        color: #ffffff !important;
+
+        transform: translateY(-2px) !important;
+
+        box-shadow:
+            0 9px 24px rgba(104, 126, 235, 0.35) !important;
+    }
+
+    .stButton > button:active {
+        transform: translateY(0px) !important;
+    }
+
+
+    /* =====================================================
+       BOTÓN DE DESCARGA
+       ===================================================== */
+
+    [data-testid="stDownloadButton"] button {
+        background: #ffffff !important;
+
+        color: #566bdb !important;
+
+        border: 1px solid #d5def8 !important;
+        border-radius: 13px !important;
+
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 0.82rem !important;
+
+        min-height: 42px !important;
+
+        box-shadow:
+            0 4px 14px rgba(74, 104, 170, 0.08) !important;
+
+        transition:
+            background 0.2s ease,
+            border 0.2s ease,
+            transform 0.2s ease !important;
+    }
+
+    [data-testid="stDownloadButton"] button:hover {
+        background: #f1f4ff !important;
+        color: #4659c4 !important;
+        border-color: #aebeff !important;
+        transform: translateY(-1px) !important;
+    }
+
+
+    /* =====================================================
+       MÉTRICAS
+       ===================================================== */
+
+    [data-testid="metric-container"] {
+        background:
+            linear-gradient(
+                145deg,
+                #ffffff 0%,
+                #f7f9ff 100%
+            );
+
+        border: 1px solid #e1e7f5;
+
+        border-radius: 18px;
+
+        padding: 18px 20px;
+
+        box-shadow:
+            0 6px 20px rgba(65, 91, 150, 0.07);
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+    [data-testid="metric-container"]::before {
+        content: "";
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 4px;
+
+        background: linear-gradient(
+            90deg,
+            #6c91ff,
+            #8b70ed
+        );
+    }
+
+    [data-testid="metric-container"] label {
+        color: #8792a9 !important;
+
+        font-family: 'Poppins', sans-serif !important;
+
+        font-size: 0.68rem !important;
+
+        font-weight: 600 !important;
+
         text-transform: uppercase !important;
-        letter-spacing: 0.6px !important;
+
+        letter-spacing: 0.7px !important;
     }
+
     [data-testid="metric-container"] [data-testid="stMetricValue"] {
-        color: #111827 !important;
+        color: #202a44 !important;
+
+        font-family: 'Poppins', sans-serif !important;
+
         font-weight: 700 !important;
-        font-size: 1.55rem !important;
+
+        font-size: 1.45rem !important;
     }
 
-    /* Header */
+
+    /* =====================================================
+       HEADER PRINCIPAL
+       ===================================================== */
+
     .header-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-left: 5px solid #1f2937;
-        border-radius: 8px;
-        padding: 28px 36px;
-        margin-bottom: 24px;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+        position: relative;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #f1f5ff 55%,
+                #edf0ff 100%
+            );
+
+        border: 1px solid #e0e7f7;
+
+        border-radius: 24px;
+
+        padding: 32px 38px;
+
+        margin-bottom: 25px;
+
+        box-shadow:
+            0 10px 30px rgba(67, 92, 153, 0.08);
+
+        overflow: hidden;
     }
 
-    /* Sección card */
+    .header-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -60px;
+        top: -80px;
+
+        border-radius: 50%;
+
+        background:
+            radial-gradient(
+                circle,
+                rgba(122, 150, 255, 0.28),
+                rgba(122, 150, 255, 0)
+            );
+    }
+
+    .header-card h1 {
+        color: #202a44 !important;
+
+        font-size: 1.9rem !important;
+
+        font-weight: 700 !important;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+    .header-card p {
+        color: #71809d !important;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    /* =====================================================
+       TARJETAS
+       ===================================================== */
+
     .section-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 24px 28px;
-        margin-bottom: 16px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        background: rgba(255,255,255,0.94);
+
+        border: 1px solid #e1e7f4;
+
+        border-radius: 20px;
+
+        padding: 25px 28px;
+
+        margin-bottom: 17px;
+
+        box-shadow:
+            0 7px 24px rgba(67, 92, 153, 0.06);
     }
 
-    /* Barras de frecuencia */
+    .section-card h3 {
+        color: #26324f !important;
+    }
+
+
+    /* =====================================================
+       ITEMS DE INFORMACIÓN
+       ===================================================== */
+
+    .info-item {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 13px;
+
+        padding: 13px 16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff,
+                #f6f8ff
+            );
+
+        border: 1px solid #e5eaf6;
+
+        border-radius: 14px;
+
+        margin-bottom: 9px;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .info-item:hover {
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 5px 15px rgba(72, 96, 160, 0.08);
+    }
+
+
+    /* =====================================================
+       ETIQUETAS
+       ===================================================== */
+
+    .uso-tag {
+        display: inline-block;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f0f4ff,
+                #f4f0ff
+            );
+
+        border: 1px solid #dce3f8;
+
+        border-radius: 30px;
+
+        padding: 7px 14px;
+
+        font-size: 0.78rem;
+
+        font-weight: 500;
+
+        color: #596b9a;
+
+        margin: 4px 3px;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .uso-tag:hover {
+        background: #e9efff;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       NUBE DE PALABRAS
+       ===================================================== */
+
+    .wc-container {
+        background:
+            linear-gradient(
+                145deg,
+                #ffffff 0%,
+                #f6f8ff 100%
+            );
+
+        border: 1px solid #e0e7f5;
+
+        border-radius: 22px;
+
+        padding: 22px;
+
+        box-shadow:
+            0 8px 25px rgba(67, 92, 153, 0.07);
+
+        margin-bottom: 16px;
+    }
+
+
+    /* =====================================================
+       BARRAS DE FRECUENCIA
+       ===================================================== */
+
     .freq-row {
         display: flex;
+
         align-items: center;
+
         gap: 14px;
-        padding: 7px 14px;
-        margin: 4px 0;
-        background: #f9fafb;
-        border: 1px solid #f3f4f6;
-        border-radius: 6px;
-        transition: background 0.15s;
+
+        padding: 8px 14px;
+
+        margin: 5px 0;
+
+        background: #ffffff;
+
+        border: 1px solid #e8ecf5;
+
+        border-radius: 12px;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
-    .freq-row:hover { background: #f3f4f6; }
+
+    .freq-row:hover {
+        background: #f5f7ff;
+
+        transform: translateX(2px);
+
+        box-shadow:
+            0 4px 12px rgba(67, 92, 153, 0.06);
+    }
 
     .freq-bar {
         height: 8px;
-        background: #374151;
-        border-radius: 4px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #7195ff,
+                #8b72eb
+            );
+
+        border-radius: 10px;
+
         display: inline-block;
+
         vertical-align: middle;
     }
 
-    /* Tag de ranking */
+
+    /* =====================================================
+       RANKING
+       ===================================================== */
+
     .rank-tag {
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-        border-radius: 4px;
-        padding: 1px 8px;
-        font-size: 0.75rem;
+        background: #eef2ff;
+
+        border: 1px solid #dce3fb;
+
+        border-radius: 8px;
+
+        padding: 2px 8px;
+
+        font-size: 0.68rem;
+
         font-weight: 700;
-        color: #6b7280;
-        font-family: 'IBM Plex Mono', monospace;
-        min-width: 36px;
+
+        color: #6475b3;
+
+        font-family: 'Poppins', sans-serif;
+
+        min-width: 38px;
+
         text-align: center;
     }
 
-    /* Welcome items */
-    .info-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 12px 16px;
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 6px;
-        margin-bottom: 8px;
-    }
 
-    /* Uso cards */
-    .uso-tag {
-        display: inline-block;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-        padding: 5px 14px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: #374151;
-        margin: 4px 3px;
-    }
+    /* =====================================================
+       EXPANDER
+       ===================================================== */
 
-    /* Expander */
     div[data-testid="stExpander"] {
-        border: 1px solid #e5e7eb !important;
-        border-radius: 8px !important;
+        border: 1px solid #e0e7f5 !important;
+
+        border-radius: 16px !important;
+
         background: #ffffff !important;
+
+        box-shadow:
+            0 5px 18px rgba(67, 92, 153, 0.05) !important;
     }
 
-    hr { border-color: #e5e7eb !important; }
+    div[data-testid="stExpander"] summary {
+        color: #4d5d82 !important;
 
-    /* Nube container */
-    .wc-container {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-        margin-bottom: 16px;
+        font-weight: 600 !important;
     }
+
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    [data-testid="stDataFrame"] {
+        border-radius: 14px !important;
+
+        overflow: hidden !important;
+
+        border: 1px solid #e1e7f4 !important;
+
+        box-shadow:
+            0 4px 15px rgba(67, 92, 153, 0.05) !important;
+    }
+
+
+    /* =====================================================
+       DIVISORES
+       ===================================================== */
+
+    hr {
+        border-color: #e1e7f4 !important;
+    }
+
+
+    /* =====================================================
+       RADIO BUTTONS
+       ===================================================== */
+
+    [data-testid="stRadio"] label {
+        color: #566582 !important;
+    }
+
+
+    /* =====================================================
+       SLIDER
+       ===================================================== */
+
+    [data-testid="stSlider"] {
+        padding-top: 5px;
+    }
+
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    [data-testid="stAlert"] {
+        border-radius: 14px !important;
+
+        border: 1px solid #dce5fa !important;
+    }
+
+
+    /* =====================================================
+       SCROLLBAR
+       ===================================================== */
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f2f5fb;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #c2cceb;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #9daada;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
