@@ -4,446 +4,296 @@ import pandas as pd
 import numpy as np
 import re
 import io
+
 from collections import Counter
 from wordcloud import WordCloud, STOPWORDS
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # CONFIGURACIÓN
-# =========================================================
+# ─────────────────────────────────────────────
 
 st.set_page_config(
     page_title="WordCloud Studio",
     page_icon="☁️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 
-# =========================================================
-# ESTILOS - INTERFAZ INSPIRADA EN LA IMAGEN
-# =========================================================
+# ─────────────────────────────────────────────
+# ESTILOS
+# ─────────────────────────────────────────────
 
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-:root {
-    --bg: #f3dfe0;
-    --panel: #571d25;
-    --panel-dark: #3d1118;
-    --card: #6a242d;
-    --card-light: #7b2d35;
-    --accent: #f3c65d;
-    --accent-soft: #e7a7a7;
-    --blue: #b7d9e8;
-    --text: #fff8f5;
-    --muted: #d7bfc1;
-    --line: rgba(255,255,255,0.10);
-}
-
-* {
+html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
 .stApp {
-    background: var(--bg);
+    background-color: #f4f5f7;
 }
-
-.main .block-container {
-    max-width: 1400px;
-    padding: 28px 34px 50px 34px;
-}
-
-/* Ocultar elementos innecesarios de Streamlit */
-
-#MainMenu {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
-header[data-testid="stHeader"] {
-    background: transparent;
-}
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
 
 [data-testid="stSidebar"] {
-    background: #321017 !important;
-    border-right: none !important;
-}
-
-[data-testid="stSidebar"] > div:first-child {
-    padding: 25px 18px 30px 18px;
+    background-color: #ffffff !important;
+    border-right: 1px solid #dde1e7;
 }
 
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #fff7f4 !important;
-    font-weight: 800 !important;
+    color: #161a1d !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
 }
 
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span {
-    color: #e4cacc !important;
+[data-testid="stSidebar"] label {
+    color: #4a5568 !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stSidebar"] p {
+    color: #6b7280 !important;
+    font-size: 0.88rem !important;
 }
 
 [data-testid="stSidebar"] hr {
-    border-color: rgba(255,255,255,0.10) !important;
+    border-color: #e5e7eb !important;
+    margin: 16px 0 !important;
 }
-
-/* =========================================================
-   TITULOS
-   ========================================================= */
-
-h1, h2, h3, h4 {
-    color: #fff8f5 !important;
-}
-
-p, li {
-    color: #d9c3c5 !important;
-}
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero {
-    background:
-        radial-gradient(circle at 75% 20%, rgba(243,198,93,0.14), transparent 28%),
-        linear-gradient(135deg, #68232c 0%, #4b151e 100%);
-    border-radius: 28px;
-    padding: 38px 42px;
-    margin-bottom: 22px;
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 16px 40px rgba(61,17,24,0.18);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero:after {
-    content: "";
-    position: absolute;
-    width: 220px;
-    height: 220px;
-    right: -70px;
-    top: -80px;
-    border-radius: 50%;
-    background: rgba(243,198,93,0.08);
-}
-
-.eyebrow {
-    color: #f3c65d;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-}
-
-.hero-title {
-    color: #fff8f5;
-    font-size: 54px;
-    font-weight: 900;
-    line-height: 1.05;
-    letter-spacing: -2px;
-    margin-bottom: 14px;
-    position: relative;
-    z-index: 2;
-}
-
-.hero-title span {
-    color: #f3c65d;
-}
-
-.hero-text {
-    color: #d9c3c5;
-    font-size: 16px;
-    line-height: 1.65;
-    max-width: 650px;
-    position: relative;
-    z-index: 2;
-}
-
-/* =========================================================
-   CARDS
-   ========================================================= */
-
-.section-card,
-.wc-container {
-    background: #5c2028;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 22px;
-    padding: 24px;
-    margin-bottom: 18px;
-    box-shadow: 0 12px 28px rgba(61,17,24,0.14);
-}
-
-.section-card h3,
-.section-card h4 {
-    color: #fff8f5 !important;
-}
-
-.info-item {
-    padding: 13px 15px;
-    margin-bottom: 9px;
-    background: rgba(255,255,255,0.055);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 13px;
-}
-
-.uso-tag {
-    display: inline-block;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: #f6e8e5 !important;
-    border-radius: 18px;
-    padding: 7px 12px;
-    font-size: 0.82rem;
-    margin: 4px 3px;
-}
-
-/* =========================================================
-   INPUTS
-   ========================================================= */
 
 textarea,
 input[type="text"] {
-    background: #4a171f !important;
-    color: #fff8f5 !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    border-radius: 12px !important;
-}
-
-textarea::placeholder,
-input::placeholder {
-    color: #bfa6a9 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    color: #111827 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9rem !important;
 }
 
 textarea:focus,
 input[type="text"]:focus {
-    border-color: #f3c65d !important;
-    box-shadow: 0 0 0 2px rgba(243,198,93,0.15) !important;
+    border-color: #374151 !important;
+    box-shadow: 0 0 0 2px rgba(55,65,81,0.12) !important;
 }
-
-/* Selectbox */
 
 [data-baseweb="select"] > div {
-    background: #4a171f !important;
-    color: #fff8f5 !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    border-radius: 12px !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    color: #111827 !important;
+    font-size: 0.9rem !important;
 }
 
-[data-baseweb="select"] span {
-    color: #fff8f5 !important;
+h1 {
+    font-family: 'Inter', sans-serif !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
 }
 
-/* Radio / checkbox */
-
-[data-testid="stRadio"] label,
-[data-testid="stCheckbox"] label {
-    color: #e6cfd1 !important;
+h2,
+h3 {
+    font-family: 'Inter', sans-serif !important;
+    color: #1f2937 !important;
+    font-weight: 600 !important;
 }
 
-/* Slider */
-
-[data-testid="stSlider"] {
-    color: #f3c65d !important;
+p,
+li {
+    color: #374151 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
 }
-
-/* =========================================================
-   BOTONES
-   ========================================================= */
 
 .stButton > button {
-    background: #f3c65d !important;
-    color: #45151b !important;
+    background: #1f2937 !important;
+    color: #ffffff !important;
     border: none !important;
-    border-radius: 13px !important;
-    min-height: 45px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.2px !important;
-    box-shadow: 0 8px 18px rgba(243,198,93,0.18) !important;
-    transition: all 0.2s ease !important;
+    border-radius: 6px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.3px !important;
+    padding: 0.6rem 1.4rem !important;
+    width: 100% !important;
+    transition: background 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .stButton > button:hover {
-    background: #ffe08a !important;
-    color: #351016 !important;
-    transform: translateY(-1px);
+    background: #111827 !important;
+    box-shadow: 0 2px 12px rgba(17,24,39,0.25) !important;
 }
 
 [data-testid="stDownloadButton"] button {
-    background: #7b2d35 !important;
-    color: #fff8f5 !important;
-    border: 1px solid rgba(255,255,255,0.10) !important;
-    border-radius: 12px !important;
-    font-weight: 700 !important;
+    background: #374151 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    transition: background 0.2s !important;
 }
 
 [data-testid="stDownloadButton"] button:hover {
-    background: #8e3540 !important;
+    background: #1f2937 !important;
 }
 
-/* =========================================================
-   MÉTRICAS
-   ========================================================= */
-
 [data-testid="metric-container"] {
-    background: #5c2028 !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 18px !important;
-    padding: 17px !important;
-    box-shadow: 0 10px 24px rgba(61,17,24,0.12);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-top: 3px solid #374151;
+    border-radius: 8px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 [data-testid="metric-container"] label {
-    color: #cbaeb1 !important;
-    font-size: 0.74rem !important;
-    font-weight: 700 !important;
+    color: #6b7280 !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.7px !important;
+    letter-spacing: 0.6px !important;
 }
 
-[data-testid="stMetricValue"] {
-    color: #fff8f5 !important;
-    font-weight: 800 !important;
+[data-testid="metric-container"] [data-testid="stMetricValue"] {
+    color: #111827 !important;
+    font-weight: 700 !important;
+    font-size: 1.55rem !important;
 }
 
-/* =========================================================
-   FRECUENCIAS
-   ========================================================= */
+.header-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid #1f2937;
+    border-radius: 8px;
+    padding: 28px 36px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.section-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
 
 .freq-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 9px 12px;
-    margin: 5px 0;
-    background: #4e1921;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 11px;
+    gap: 14px;
+    padding: 7px 14px;
+    margin: 4px 0;
+    background: #f9fafb;
+    border: 1px solid #f3f4f6;
+    border-radius: 6px;
+    transition: background 0.15s;
 }
 
 .freq-row:hover {
-    background: #64222b;
+    background: #f3f4f6;
 }
 
 .freq-bar {
     height: 8px;
-    background: #f3c65d;
-    border-radius: 10px;
+    background: #374151;
+    border-radius: 4px;
     display: inline-block;
+    vertical-align: middle;
 }
 
 .rank-tag {
-    background: rgba(243,198,93,0.13);
-    border: 1px solid rgba(243,198,93,0.20);
-    color: #f3c65d !important;
-    border-radius: 7px;
-    padding: 3px 7px;
-    font-size: 11px;
-    font-weight: 800;
-    min-width: 35px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6b7280;
+    font-family: 'IBM Plex Mono', monospace;
+    min-width: 36px;
     text-align: center;
 }
 
-/* =========================================================
-   DATAFRAME
-   ========================================================= */
-
-[data-testid="stDataFrame"] {
-    border-radius: 14px !important;
-    overflow: hidden;
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 8px;
 }
 
-/* =========================================================
-   EXPANDER
-   ========================================================= */
+.uso-tag {
+    display: inline-block;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+    margin: 4px 3px;
+}
 
 div[data-testid="stExpander"] {
-    background: #5c2028 !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 14px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
 }
 
-div[data-testid="stExpander"] summary {
-    color: #fff8f5 !important;
+hr {
+    border-color: #e5e7eb !important;
 }
 
-/* =========================================================
-   ALERTAS
-   ========================================================= */
-
-[data-testid="stAlert"] {
-    border-radius: 13px !important;
-}
-
-/* =========================================================
-   FILE UPLOADER
-   ========================================================= */
-
-[data-testid="stFileUploader"] {
-    background: #4a171f !important;
-    border-radius: 12px !important;
-    border: 1px dashed rgba(255,255,255,0.15) !important;
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-    .main .block-container {
-        padding: 20px 16px 40px 16px;
-    }
-
-    .hero {
-        padding: 28px;
-        border-radius: 20px;
-    }
-
-    .hero-title {
-        font-size: 40px;
-    }
+.wc-container {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    margin-bottom: 16px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # STOPWORDS
-# =========================================================
+# ─────────────────────────────────────────────
 
 STOPWORDS_ES = {
-    "de", "la", "el", "en", "y", "a", "los", "del", "se",
-    "las", "un", "por", "con", "no", "una", "su", "para",
-    "es", "al", "lo", "como", "mas", "pero", "sus", "le",
-    "ya", "o", "este", "si", "porque", "esta", "entre",
-    "cuando", "muy", "sin", "sobre", "tambien", "me",
-    "hasta", "hay", "donde", "quien", "desde", "nos",
-    "durante", "ni", "contra", "ese", "eso", "ante",
-    "bajo", "tras", "que", "fue", "son", "han", "ha",
-    "ser", "era", "estan", "siendo", "sido", "he", "has",
-    "hemos", "habian", "tiene", "tienen", "hacer",
-    "puede", "pueden", "asi", "tan", "parte", "todo",
-    "todos", "todas", "cada", "otro", "otra", "otros",
-    "otras", "mismo", "misma", "nuestro", "nuestra",
-    "ellos", "ellas", "nosotros", "les", "esa", "esos",
-    "esas", "aquel", "aquella", "aquellos"
+    "de","la","el","en","y","a","los","del","se","las",
+    "un","por","con","no","una","su","para","es","al",
+    "lo","como","mas","pero","sus","le","ya","o","este",
+    "si","porque","esta","entre","cuando","muy","sin",
+    "sobre","tambien","me","hasta","hay","donde","quien",
+    "desde","nos","durante","ni","contra","ese","eso",
+    "ante","bajo","tras","que","fue","son","han","ha",
+    "ser","era","estan","siendo","sido","he","has",
+    "hemos","habian","tiene","tienen","hacer","puede",
+    "pueden","asi","tan","parte","todo","todos","todas",
+    "cada","otro","otra","otros","otras","mismo","misma",
+    "nuestro","nuestra","ellos","ellas","nosotros","les",
+    "esa","esos","esas","aquel","aquella","aquellos",
 }
 
 
 def obtener_stopwords(idioma):
+
     sw = set(STOPWORDS)
 
     if idioma in ("Español", "Ambos"):
@@ -452,62 +302,93 @@ def obtener_stopwords(idioma):
     return sw
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # PALETAS
-# =========================================================
+# ─────────────────────────────────────────────
 
 PALETAS = {
-    "Dorado": [
-        "#f3c65d",
-        "#ffe08a",
-        "#e8b84f",
-        "#f7d77c",
-        "#dca83d"
+
+    "Escala de grises": [
+        "#111827",
+        "#1f2937",
+        "#374151",
+        "#4b5563",
+        "#6b7280",
+        "#9ca3af",
+        "#d1d5db"
     ],
 
-    "Coral": [
-        "#ff7b72",
-        "#ff9189",
-        "#e96058",
-        "#d94f4a",
-        "#ffaaa3"
+    "Azul corporativo": [
+        "#1e3a5f",
+        "#1d4ed8",
+        "#2563eb",
+        "#3b82f6",
+        "#60a5fa",
+        "#93c5fd",
+        "#0f2942"
     ],
 
-    "Azul": [
-        "#75b9d4",
-        "#8dcae0",
-        "#5ca2c2",
-        "#4a8eae",
-        "#b0ddeb"
+    "Verde institucional": [
+        "#064e3b",
+        "#065f46",
+        "#047857",
+        "#059669",
+        "#10b981",
+        "#34d399",
+        "#6ee7b7"
     ],
 
-    "Verde": [
-        "#68b58d",
-        "#7bc89d",
-        "#4f9d78",
-        "#8dd2aa",
-        "#3e8061"
+    "Gris azulado": [
+        "#0f172a",
+        "#1e293b",
+        "#334155",
+        "#475569",
+        "#64748b",
+        "#94a3b8",
+        "#cbd5e1"
     ],
 
-    "Grises": [
-        "#f4eeee",
-        "#d8cacc",
-        "#bcaeb1",
-        "#9e9094",
-        "#7d6e72"
-    ]
+    "Terracota": [
+        "#7c2d12",
+        "#9a3412",
+        "#c2410c",
+        "#ea580c",
+        "#f97316",
+        "#fb923c",
+        "#fdba74"
+    ],
+
+    "Índigo profundo": [
+        "#1e1b4b",
+        "#312e81",
+        "#3730a3",
+        "#4338ca",
+        "#4f46e5",
+        "#6366f1",
+        "#818cf8"
+    ],
+
+    "Monocromático negro": [
+        "#000000",
+        "#111111",
+        "#222222",
+        "#444444",
+        "#666666",
+        "#888888",
+        "#aaaaaa"
+    ],
 }
 
 
 FORMAS = {
     "Rectángulo": None,
-    "Círculo": "circle"
+    "Círculo": "circle",
 }
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # MÁSCARA
-# =========================================================
+# ─────────────────────────────────────────────
 
 def crear_mascara(forma, size=500):
 
@@ -534,11 +415,15 @@ def crear_mascara(forma, size=500):
     return None
 
 
-# =========================================================
-# LIMPIAR TEXTO
-# =========================================================
+# ─────────────────────────────────────────────
+# FUNCIONES CORE
+# ─────────────────────────────────────────────
 
-def limpiar_texto(texto, stopwords, min_longitud):
+def limpiar_texto(
+    texto,
+    stopwords,
+    min_longitud
+):
 
     texto = texto.lower()
 
@@ -556,46 +441,41 @@ def limpiar_texto(texto, stopwords, min_longitud):
     )
 
     palabras = [
-        palabra
-        for palabra in texto.split()
-        if palabra not in stopwords
-        and len(palabra) >= min_longitud
+        p
+        for p in texto.split()
+        if p not in stopwords
+        and len(p) >= min_longitud
     ]
 
     return " ".join(palabras)
 
 
-# =========================================================
-# CONTAR PALABRAS
-# =========================================================
-
-def contar_palabras(texto):
-
-    datos = Counter(
-        texto.split()
-    ).most_common(50)
+def contar_palabras(texto_limpio):
 
     return pd.DataFrame(
-        datos,
-        columns=["Palabra", "Frecuencia"]
+        Counter(
+            texto_limpio.split()
+        ).most_common(50),
+        columns=[
+            "Palabra",
+            "Frecuencia"
+        ]
     )
 
 
-# =========================================================
-# GENERAR WORDCLOUD
-# =========================================================
-
 def generar_wordcloud(
-    texto,
-    paleta,
+    texto_limpio,
+    paleta_nombre,
     max_words,
     fondo,
-    forma
+    forma,
+    ancho=1000,
+    alto=520
 ):
 
     import random
 
-    colores = PALETAS[paleta]
+    colores = PALETAS[paleta_nombre]
 
     def color_func(
         word,
@@ -617,12 +497,12 @@ def generar_wordcloud(
 
     mascara = crear_mascara(
         forma,
-        500
+        size=min(ancho, alto)
     )
 
     wc = WordCloud(
-        width=1000,
-        height=520,
+        width=ancho,
+        height=alto,
         max_words=max_words,
         background_color=fondo,
         color_func=color_func,
@@ -632,11 +512,14 @@ def generar_wordcloud(
         max_font_size=120,
         prefer_horizontal=0.75,
         relative_scaling=0.5,
-        margin=5
-    ).generate(texto)
+        margin=5,
+    ).generate(texto_limpio)
 
     fig, ax = plt.subplots(
-        figsize=(10, 5.2)
+        figsize=(
+            ancho / 100,
+            alto / 100
+        )
     )
 
     ax.imshow(
@@ -646,9 +529,7 @@ def generar_wordcloud(
 
     ax.axis("off")
 
-    fig.patch.set_facecolor(
-        fondo
-    )
+    fig.patch.set_facecolor(fondo)
 
     plt.tight_layout(
         pad=0
@@ -656,10 +537,6 @@ def generar_wordcloud(
 
     return fig
 
-
-# =========================================================
-# CONVERTIR FIGURA A PNG
-# =========================================================
 
 def fig_a_bytes(fig):
 
@@ -678,26 +555,17 @@ def fig_a_bytes(fig):
     return buf.read()
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # SIDEBAR
-# =========================================================
+# ─────────────────────────────────────────────
 
 with st.sidebar:
 
-    st.markdown(
-        "## ☁️ WordCloud"
-    )
-
-    st.markdown(
-        "<p style='color:#f3c65d !important; font-weight:700; margin-top:-12px;'>STUDIO</p>",
-        unsafe_allow_html=True
-    )
+    st.markdown("## ☁️ WordCloud Studio")
 
     st.divider()
 
-    st.markdown(
-        "### FUENTE DE TEXTO"
-    )
+    st.markdown("### FUENTE DE TEXTO")
 
     fuente = st.radio(
         "fuente",
@@ -713,56 +581,62 @@ with st.sidebar:
     if fuente == "✍️ Escribir / Pegar":
 
         texto_input = st.text_area(
-            "Texto",
-            height=170,
-            placeholder="Escribe o pega aquí tu texto..."
+            "Texto:",
+            height=190,
+            placeholder="Pega aquí un artículo, reseña, discurso, encuesta..."
         )
 
         with st.expander("Cargar texto de ejemplo"):
 
             ejemplos = {
+
                 "Inteligencia Artificial": """
                 La inteligencia artificial es una disciplina de la informática
                 orientada a desarrollar sistemas capaces de ejecutar tareas
                 que requieren capacidades cognitivas humanas. El aprendizaje
-                automático, las redes neuronales y el procesamiento del lenguaje
-                natural son tecnologías importantes de la inteligencia artificial.
+                automático, las redes neuronales profundas y el procesamiento
+                del lenguaje natural constituyen los pilares técnicos de los
+                sistemas modernos de inteligencia artificial.
                 """,
 
                 "Colombia": """
-                Colombia es un país de América del Sur reconocido por su
-                biodiversidad, riqueza cultural y diversidad de paisajes.
-                Bogotá es la capital y Medellín es una de las ciudades más
-                importantes del país. Colombia posee regiones naturales como
-                los Andes, el Caribe, el Pacífico y la Amazonía.
+                Colombia es una nación situada en el extremo noroccidental
+                de América del Sur, reconocida por su excepcional biodiversidad,
+                riqueza cultural y diversidad de paisajes. Bogotá es la capital
+                y principal centro económico, seguida de Medellín, Cali y
+                Barranquilla como ciudades de relevancia nacional.
                 """,
 
-                "Tecnología": """
-                La tecnología transforma la manera en que las personas trabajan,
-                estudian y se comunican. La inteligencia artificial, el Internet
-                de las cosas, la robótica, la automatización y el análisis de
-                datos son herramientas fundamentales para la transformación digital.
+                "Tecnología 4.0": """
+                La cuarta revolución industrial redefine los modelos productivos
+                mediante la convergencia de tecnologías digitales avanzadas.
+                El Internet de las cosas, la inteligencia artificial, el análisis
+                de grandes datos, la robótica colaborativa y la automatización
+                inteligente son pilares estratégicos de la industria moderna.
                 """
             }
 
             ejemplo_sel = st.selectbox(
-                "Ejemplo",
-                list(ejemplos.keys())
+                "Ejemplo:",
+                list(ejemplos.keys()),
+                label_visibility="collapsed"
             )
 
             if st.button(
-                "Cargar ejemplo",
-                use_container_width=True
+                "Cargar texto seleccionado"
             ):
-                st.session_state["texto_ejemplo"] = ejemplos[
-                    ejemplo_sel
-                ]
+
+                st.session_state[
+                    "texto_ejemplo"
+                ] = ejemplos[ejemplo_sel]
+
                 st.rerun()
 
         if (
             "texto_ejemplo" in st.session_state
             and not texto_input
         ):
+
             texto_input = st.session_state[
                 "texto_ejemplo"
             ]
@@ -770,8 +644,9 @@ with st.sidebar:
     else:
 
         archivo = st.file_uploader(
-            "Archivo",
-            type=["txt", "csv"]
+            "Archivo:",
+            type=["txt", "csv"],
+            label_visibility="collapsed"
         )
 
         if archivo:
@@ -789,26 +664,28 @@ with st.sidebar:
                     archivo
                 )
 
-                columna = st.selectbox(
-                    "Columna de texto",
+                col_txt = st.selectbox(
+                    "Columna de texto:",
                     df_csv.columns.tolist()
                 )
 
                 texto_input = " ".join(
-                    df_csv[columna]
+                    df_csv[col_txt]
                     .dropna()
                     .astype(str)
                     .tolist()
                 )
 
+                st.success(
+                    f"Archivo cargado — {len(texto_input):,} caracteres"
+                )
+
     st.divider()
 
-    st.markdown(
-        "### PROCESAMIENTO"
-    )
+    st.markdown("### PROCESAMIENTO")
 
     idioma = st.selectbox(
-        "Stopwords",
+        "Stopwords:",
         [
             "Español",
             "Inglés",
@@ -818,30 +695,28 @@ with st.sidebar:
     )
 
     min_longitud = st.slider(
-        "Longitud mínima",
+        "Longitud mínima de palabra",
         2,
         8,
         3
     )
 
     palabras_extra = st.text_input(
-        "Excluir palabras",
-        placeholder="ej: también, aquí"
+        "Excluir palabras adicionales:",
+        placeholder="ej: también, así, aquí"
     )
 
     st.divider()
 
-    st.markdown(
-        "### APARIENCIA"
-    )
+    st.markdown("### APARIENCIA")
 
     paleta_sel = st.selectbox(
-        "Paleta",
+        "Paleta:",
         list(PALETAS.keys())
     )
 
     fondo_sel = st.radio(
-        "Fondo",
+        "Fondo:",
         [
             "Blanco",
             "Negro"
@@ -856,12 +731,12 @@ with st.sidebar:
     )
 
     forma_sel = st.selectbox(
-        "Forma",
+        "Forma:",
         list(FORMAS.keys())
     )
 
     max_words = st.slider(
-        "Máximo de palabras",
+        "Máximo de palabras:",
         20,
         200,
         80
@@ -870,48 +745,47 @@ with st.sidebar:
     st.divider()
 
     generar = st.button(
-        "GENERAR NUBE  ↗",
+        "GENERAR NUBE ↗",
         use_container_width=True
     )
 
 
-# =========================================================
-# HERO PRINCIPAL
-# =========================================================
+# ─────────────────────────────────────────────
+# CONTENIDO PRINCIPAL
+# ─────────────────────────────────────────────
 
 st.markdown("""
-<div class="hero">
+<div class="header-card">
 
-    <div class="eyebrow">
-        TEXT ANALYTICS
-    </div>
+    <h1 style="margin:0; font-size:1.9rem;">
+        ☁️ WordCloud Studio
+    </h1>
 
-    <div class="hero-title">
-        WordCloud <span>Studio.</span>
-    </div>
-
-    <div class="hero-text">
-        Convierte cualquier texto en una nube de palabras
-        clara, visual y fácil de analizar. Las palabras más
-        frecuentes aparecerán con mayor tamaño.
-    </div>
+    <p style="
+        margin:6px 0 0 0;
+        color:#6b7280 !important;
+        font-size:0.97rem;
+    ">
+        Análisis de frecuencia léxica y visualización
+        de nubes de palabras
+    </p>
 
 </div>
 """, unsafe_allow_html=True)
 
 
-# =========================================================
-# PANTALLA DE INICIO
-# =========================================================
+# ─────────────────────────────────────────────
+# PANTALLA DE BIENVENIDA
+# ─────────────────────────────────────────────
 
-if not generar:
+if not generar or not texto_input.strip():
 
-    col1, col2 = st.columns(
+    col_izq, col_der = st.columns(
         [3, 2],
         gap="large"
     )
 
-    with col1:
+    with col_izq:
 
         st.markdown(
             '<div class="section-card">',
@@ -919,54 +793,93 @@ if not generar:
         )
 
         st.markdown(
-            "### ¿Cómo funciona?"
+            "### Acerca de esta herramienta"
         )
 
-        st.markdown(
-            """
-            Una nube de palabras permite identificar rápidamente
-            cuáles son los términos más utilizados dentro de un texto.
-            """
-        )
+        st.markdown("""
+        Una **nube de palabras** representa visualmente
+        la frecuencia de términos en un texto: las palabras
+        más frecuentes aparecen con mayor tamaño, permitiendo
+        identificar los temas centrales de un corpus de manera intuitiva.
+        """)
 
-        pasos = [
-            ("01", "Ingresa un texto", "Escribe, pega o sube un archivo."),
-            ("02", "Configura el análisis", "Selecciona stopwords, colores y forma."),
-            ("03", "Genera la nube", "Presiona el botón de generación."),
-            ("04", "Descarga", "Obtén la imagen PNG y los datos CSV.")
+        elementos = [
+            (
+                "📊",
+                "Análisis de frecuencia",
+                "Identifica los términos dominantes de cualquier corpus textual."
+            ),
+            (
+                "🔍",
+                "Filtrado inteligente",
+                "Elimina palabras vacías (*stopwords*) en español e inglés."
+            ),
+            (
+                "🎨",
+                "Personalización visual",
+                "Selecciona paleta, forma y densidad de la nube."
+            ),
+            (
+                "⬇️",
+                "Exportación",
+                "Descarga la imagen en alta resolución y la tabla de frecuencias en CSV."
+            ),
         ]
 
-        for numero, titulo, descripcion in pasos:
+        for icono, titulo, desc in elementos:
 
             st.markdown(
                 f"""
                 <div class="info-item">
-                    <div>
-                        <span style="
-                            color:#f3c65d;
-                            font-weight:900;
-                            font-size:12px;
-                        ">
-                            {numero}
-                        </span>
-                    </div>
+
+                    <span style="
+                        font-size:1.3rem;
+                        flex-shrink:0;
+                    ">
+                        {icono}
+                    </span>
 
                     <div>
-                        <strong style="color:#fff8f5;">
+
+                        <strong style="
+                            color:#111827;
+                        ">
                             {titulo}
                         </strong>
 
                         <p style="
-                            margin:3px 0 0 0;
-                            color:#d0b9bc !important;
-                            font-size:13px;
+                            margin:2px 0 0 0;
+                            color:#6b7280 !important;
+                            font-size:0.88rem;
                         ">
-                            {descripcion}
+                            {desc}
                         </p>
+
                     </div>
+
                 </div>
                 """,
                 unsafe_allow_html=True
+            )
+
+        st.markdown(
+            "#### Instrucciones"
+        )
+
+        pasos = [
+            "Ingresa o sube un texto en el panel lateral.",
+            "Configura el idioma de *stopwords*, paleta y número de palabras.",
+            "Haz clic en **GENERAR NUBE ↗**.",
+            "Descarga la imagen PNG o la tabla CSV.",
+        ]
+
+        for i, paso in enumerate(
+            pasos,
+            1
+        ):
+
+            st.markdown(
+                f"**{i}.** {paso}"
             )
 
         st.markdown(
@@ -974,7 +887,7 @@ if not generar:
             unsafe_allow_html=True
         )
 
-    with col2:
+    with col_der:
 
         st.markdown(
             '<div class="section-card">',
@@ -982,24 +895,57 @@ if not generar:
         )
 
         st.markdown(
-            "### Características"
+            "### Aplicaciones frecuentes"
         )
 
-        caracteristicas = [
-            "📊 Análisis de frecuencia",
-            "🔍 Eliminación de stopwords",
-            "🎨 Paletas personalizadas",
-            "⭕ Forma circular o rectangular",
-            "⬇️ Exportación PNG",
-            "📄 Exportación CSV"
+        casos = [
+            "📰 Análisis de prensa y noticias",
+            "📋 Resultados de encuestas abiertas",
+            "💬 Reseñas y comentarios de clientes",
+            "🎓 Análisis de textos académicos",
+            "🗳️ Discursos y documentos políticos",
+            "📚 Estudios literarios y de corpus",
+            "📊 Informes de inteligencia de negocio",
         ]
 
-        for item in caracteristicas:
+        for caso in casos:
+
+            st.markdown(
+                f'<span class="uso-tag">{caso}</span>',
+                unsafe_allow_html=True
+            )
+
+        st.markdown(
+            "</div>",
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            '<div class="section-card" style="margin-top:16px;">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            "### Paletas disponibles"
+        )
+
+        for nombre in PALETAS.keys():
 
             st.markdown(
                 f"""
-                <div class="uso-tag">
-                    {item}
+                <div style="
+                    padding:5px 0;
+                    border-bottom:1px solid #f3f4f6;
+                ">
+
+                    <span style="
+                        color:#374151;
+                        font-size:0.88rem;
+                        font-weight:500;
+                    ">
+                        {nombre}
+                    </span>
+
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -1010,25 +956,18 @@ if not generar:
             unsafe_allow_html=True
         )
 
-    st.stop()
+    if not texto_input.strip() and generar:
 
-
-# =========================================================
-# VALIDAR TEXTO
-# =========================================================
-
-if not texto_input.strip():
-
-    st.warning(
-        "Escribe o sube un texto antes de generar la nube."
-    )
+        st.warning(
+            "Ingresa un texto en el panel lateral antes de generar la nube."
+        )
 
     st.stop()
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # PROCESAMIENTO
-# =========================================================
+# ─────────────────────────────────────────────
 
 stopwords_set = (
     obtener_stopwords(idioma)
@@ -1040,9 +979,9 @@ stopwords_set = (
 if palabras_extra.strip():
 
     stopwords_set |= {
-        palabra.strip().lower()
-        for palabra in palabras_extra.split(",")
-        if palabra.strip()
+        p.strip().lower()
+        for p in palabras_extra.split(",")
+        if p.strip()
     }
 
 
@@ -1056,8 +995,9 @@ texto_limpio = limpiar_texto(
 if not texto_limpio.strip():
 
     st.error(
-        "El texto quedó vacío. Reduce la longitud mínima "
-        "o cambia las stopwords."
+        "El texto resultante está vacío. "
+        "Reduce la longitud mínima o cambia "
+        "la configuración de stopwords."
     )
 
     st.stop()
@@ -1066,16 +1006,6 @@ if not texto_limpio.strip():
 df_freq = contar_palabras(
     texto_limpio
 )
-
-
-if df_freq.empty:
-
-    st.error(
-        "No se encontraron palabras válidas para generar la nube."
-    )
-
-    st.stop()
-
 
 total_palabras = len(
     texto_limpio.split()
@@ -1086,32 +1016,36 @@ vocabulario = len(
 )
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # MÉTRICAS
-# =========================================================
+# ─────────────────────────────────────────────
 
 m1, m2, m3, m4 = st.columns(4)
 
 m1.metric(
-    "Palabras",
+    "Palabras procesadas",
     f"{total_palabras:,}"
 )
 
 m2.metric(
-    "Palabras únicas",
+    "Vocabulario único",
     f"{vocabulario:,}"
 )
 
 m3.metric(
-    "Más frecuente",
+    "Término más frecuente",
     df_freq.iloc[0]["Palabra"]
+    if not df_freq.empty
+    else "—"
 )
 
 m4.metric(
-    "Frecuencia",
+    "Frecuencia máxima",
     int(
         df_freq.iloc[0]["Frecuencia"]
     )
+    if not df_freq.empty
+    else 0
 )
 
 
@@ -1121,9 +1055,9 @@ st.markdown(
 )
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # NUBE
-# =========================================================
+# ─────────────────────────────────────────────
 
 with st.spinner(
     "Generando nube de palabras..."
@@ -1134,7 +1068,9 @@ with st.spinner(
         paleta_sel,
         max_words,
         fondo_color,
-        FORMAS[forma_sel]
+        FORMAS[forma_sel],
+        ancho=1000,
+        alto=520,
     )
 
 
@@ -1145,23 +1081,14 @@ st.markdown(
 
 st.markdown(
     f"""
-    <div style="
-        color:#fff8f5;
-        font-size:18px;
-        font-weight:800;
-        margin-bottom:14px;
-    ">
-        Nube de palabras
-        <span style="
-            color:#c9aaad;
-            font-size:13px;
-            font-weight:500;
-        ">
-            · {paleta_sel} · {fondo_sel}
-        </span>
-    </div>
-    """,
-    unsafe_allow_html=True
+    **Nube de palabras**
+    &nbsp;·&nbsp;
+    Paleta: *{paleta_sel}*
+    &nbsp;·&nbsp;
+    Fondo: *{fondo_sel}*
+    &nbsp;·&nbsp;
+    {max_words} palabras máx.
+    """
 )
 
 st.pyplot(
@@ -1175,9 +1102,9 @@ st.markdown(
 )
 
 
-# =========================================================
+# ─────────────────────────────────────────────
 # DESCARGA PNG
-# =========================================================
+# ─────────────────────────────────────────────
 
 img_bytes = fig_a_bytes(
     fig_wc
@@ -1188,15 +1115,16 @@ st.download_button(
     data=img_bytes,
     file_name="wordcloud.png",
     mime="image/png",
-    use_container_width=True
+    use_container_width=True,
 )
 
 
-# =========================================================
-# FRECUENCIAS
-# =========================================================
-
 st.divider()
+
+
+# ─────────────────────────────────────────────
+# ANÁLISIS
+# ─────────────────────────────────────────────
 
 col_freq, col_tabla = st.columns(
     [3, 2],
@@ -1207,7 +1135,7 @@ col_freq, col_tabla = st.columns(
 with col_freq:
 
     st.markdown(
-        "### Frecuencia de palabras"
+        "### Frecuencia léxica — Top 20"
     )
 
     top20 = df_freq.head(20)
@@ -1221,18 +1149,16 @@ with col_freq:
         1
     ):
 
-        palabra = row["Palabra"]
+        p = row["Palabra"]
 
-        frecuencia = int(
+        f = int(
             row["Frecuencia"]
         )
 
-        ancho = max(
-            20,
+        barra_w = max(
+            12,
             int(
-                frecuencia
-                / max_freq
-                * 230
+                (f / max_freq) * 210
             )
         )
 
@@ -1245,24 +1171,31 @@ with col_freq:
                 </span>
 
                 <span style="
-                    min-width:130px;
                     font-weight:600;
-                    color:#fff8f5;
+                    color:#111827;
+                    min-width:130px;
+                    font-size:0.93rem;
                 ">
-                    {palabra}
+                    {p}
                 </span>
 
                 <div
                     class="freq-bar"
-                    style="width:{ancho}px;"
+                    style="
+                        width:{barra_w}px;
+                        opacity:{0.5 + 0.5*(f/max_freq):.2f};
+                    "
                 ></div>
 
                 <span style="
-                    color:#d8c5c7;
-                    font-weight:700;
-                    margin-left:auto;
+                    font-family:'IBM Plex Mono',monospace;
+                    font-size:0.88rem;
+                    color:#374151;
+                    min-width:28px;
+                    text-align:right;
+                    font-weight:500;
                 ">
-                    {frecuencia}
+                    {f}
                 </span>
 
             </div>
@@ -1274,13 +1207,23 @@ with col_freq:
 with col_tabla:
 
     st.markdown(
-        "### Tabla"
+        "### Tabla de frecuencias"
     )
 
     st.dataframe(
-        df_freq.head(30),
+        df_freq.head(30)
+        .style
+        .background_gradient(
+            subset=["Frecuencia"],
+            cmap="Greys"
+        )
+        .format(
+            {
+                "Frecuencia": "{:,}"
+            }
+        ),
         use_container_width=True,
-        height=500
+        height=500,
     )
 
     csv_bytes = (
@@ -1290,36 +1233,50 @@ with col_tabla:
     )
 
     st.download_button(
-        "⬇️ Descargar CSV",
+        "⬇️ Exportar tabla (.csv)",
         data=csv_bytes,
         file_name="frecuencias.csv",
         mime="text/csv",
-        use_container_width=True
+        use_container_width=True,
     )
 
 
-# =========================================================
+st.divider()
+
+
+# ─────────────────────────────────────────────
 # TEXTO PROCESADO
-# =========================================================
+# ─────────────────────────────────────────────
 
 with st.expander(
-    "Ver texto procesado"
+    "Ver texto procesado (tras eliminación de stopwords)"
 ):
+
+    preview = (
+        texto_limpio[:2500]
+        + (
+            "..."
+            if len(texto_limpio) > 2500
+            else ""
+        )
+    )
 
     st.markdown(
         f"""
-        <div style="
-            background:#43151d;
-            color:#d9c3c5;
+        <p style="
+            font-family:IBM Plex Mono,monospace;
+            font-size:0.85rem;
+            color:#374151;
+            background:#f9fafb;
             padding:16px;
-            border-radius:12px;
-            border:1px solid rgba(255,255,255,0.08);
+            border-radius:6px;
+            border:1px solid #e5e7eb;
             line-height:1.8;
         ">
-            {texto_limpio[:2500]}
-        </div>
+            {preview}
+        </p>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
 
