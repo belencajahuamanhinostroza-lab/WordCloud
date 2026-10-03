@@ -11,6 +11,7 @@ Ejecución:
 import io
 import random
 import re
+import textwrap
 from collections import Counter
 
 import matplotlib.pyplot as plt
@@ -56,7 +57,7 @@ WHITE = "#FFFFFF"
 # =========================================================
 
 st.markdown(
-    f"""
+    textwrap.dedent(f"""
     <style>
 
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -478,7 +479,7 @@ st.markdown(
     }}
 
     </style>
-    """,
+    """),
     unsafe_allow_html=True,
 )
 
@@ -702,7 +703,7 @@ def fig_a_bytes(fig):
 with st.sidebar:
 
     st.markdown(
-        """
+        textwrap.dedent("""
         <div style="
             font-family:Manrope;
             font-size:1.45rem;
@@ -722,7 +723,7 @@ with st.sidebar:
         ">
             STUDIO
         </div>
-        """,
+        """),
         unsafe_allow_html=True
     )
 
@@ -914,7 +915,7 @@ with st.sidebar:
 # =========================================================
 
 st.markdown(
-    """
+    textwrap.dedent("""
     <div class="hero">
 
         <div class="eyebrow">
@@ -936,7 +937,7 @@ st.markdown(
         </div>
 
     </div>
-    """,
+    """),
     unsafe_allow_html=True
 )
 
@@ -955,7 +956,7 @@ if not generar or not texto_input.strip():
     with col_izq:
 
         st.markdown(
-            """
+            textwrap.dedent("""
             <div class="card card-coral">
 
                 <div class="card-title">
@@ -970,12 +971,12 @@ if not generar or not texto_input.strip():
                 </div>
 
             </div>
-            """,
+            """),
             unsafe_allow_html=True
         )
 
         st.markdown(
-            """
+            textwrap.dedent("""
             <div class="card">
 
                 <div class="card-title">
@@ -989,7 +990,7 @@ if not generar or not texto_input.strip():
                 </div>
 
             </div>
-            """,
+            """),
             unsafe_allow_html=True
         )
 
@@ -1017,7 +1018,7 @@ if not generar or not texto_input.strip():
         ]:
 
             st.markdown(
-                f"""
+                textwrap.dedent(f"""
                 <div style="
                     display:flex;
                     align-items:center;
@@ -1061,14 +1062,14 @@ if not generar or not texto_input.strip():
                     </div>
 
                 </div>
-                """,
+                """),
                 unsafe_allow_html=True
             )
 
     with col_der:
 
         st.markdown(
-            """
+            textwrap.dedent("""
             <div class="card card-lavender">
 
                 <div class="card-title">
@@ -1108,12 +1109,12 @@ if not generar or not texto_input.strip():
                 </div>
 
             </div>
-            """,
+            """),
             unsafe_allow_html=True
         )
 
         st.markdown(
-            """
+            textwrap.dedent("""
             <div class="card">
 
                 <div class="card-title">
@@ -1128,7 +1129,7 @@ if not generar or not texto_input.strip():
                 <span class="uso-tag">📊 Negocios</span>
 
             </div>
-            """,
+            """),
             unsafe_allow_html=True
         )
 
@@ -1188,7 +1189,7 @@ vocabulario = len(df_freq)
 # =========================================================
 
 st.markdown(
-    """
+    textwrap.dedent("""
     <div style="
         color:white;
         font-family:Manrope;
@@ -1200,7 +1201,7 @@ st.markdown(
     ">
         Your text overview
     </div>
-    """,
+    """),
     unsafe_allow_html=True
 )
 
@@ -1254,7 +1255,7 @@ with st.spinner(
     )
 
 st.markdown(
-    f"""
+    textwrap.dedent(f"""
     <div class="wc-container">
 
         <div class="wc-heading">
@@ -1266,7 +1267,7 @@ st.markdown(
         </div>
 
     </div>
-    """,
+    """),
     unsafe_allow_html=True
 )
 
@@ -1304,14 +1305,14 @@ col_freq, col_tabla = st.columns(
 with col_freq:
 
     st.markdown(
-        """
+        textwrap.dedent("""
         <div style="
             background:#FFF5EC;
             border-radius:26px;
             padding:24px;
             box-shadow:0 14px 30px rgba(68,27,30,0.10);
         ">
-        """,
+        """),
         unsafe_allow_html=True
     )
 
@@ -1346,7 +1347,7 @@ with col_freq:
         )
 
         st.markdown(
-            f"""
+            textwrap.dedent(f"""
             <div class="freq-row">
 
                 <span class="rank-tag">
@@ -1381,7 +1382,7 @@ with col_freq:
                 </span>
 
             </div>
-            """,
+            """),
             unsafe_allow_html=True
         )
 
@@ -1394,14 +1395,14 @@ with col_freq:
 with col_tabla:
 
     st.markdown(
-        """
+        textwrap.dedent("""
         <div style="
             background:#FFF5EC;
             border-radius:26px;
             padding:24px;
             box-shadow:0 14px 30px rgba(68,27,30,0.10);
         ">
-        """,
+        """),
         unsafe_allow_html=True
     )
 
