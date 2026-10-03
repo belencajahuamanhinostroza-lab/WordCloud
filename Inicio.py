@@ -29,110 +29,59 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# ESTILOS — NARANJA / NEGRO / BLANCO
+# ESTILOS — diseño profesional / corporativo
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-    /* =====================================================
-       TIPOGRAFÍA
-       ===================================================== */
-
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-    html, body, [class*="css"] {
-        font-family: 'Poppins', sans-serif !important;
+    :root {
+        --coral: #ff5a4f;
+        --coral-dark: #e7473d;
+        --orange: #ff7a45;
+        --orange-soft: #fff1ec;
+        --ink: #171717;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #fff8f5;
+        --border: #f0d8d2;
     }
 
-
-    /* =====================================================
-       FONDO GENERAL
-       ===================================================== */
+    html, body, [class*="css"] {
+        font-family: 'DM Sans', sans-serif;
+    }
 
     .stApp {
         background:
-            radial-gradient(
-                circle at 90% 0%,
-                #ff8a4c 0%,
-                #ff642f 35%,
-                #f4511e 70%,
-                #e94717 100%
-            ) !important;
-
-        color: #ffffff !important;
+            radial-gradient(circle at 85% 5%, rgba(255,122,69,0.12), transparent 24%),
+            linear-gradient(180deg, #fff8f5 0%, #fffaf8 55%, #ffffff 100%);
+        color: var(--ink);
     }
-
-    .main {
-        background: transparent !important;
-    }
-
-
-    /* =====================================================
-       TEXTO GENERAL
-       ===================================================== */
-
-    p,
-    li,
-    span,
-    label {
-        color: #ffffff !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        color: #ffffff !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
-
-
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
 
     [data-testid="stSidebar"] {
-        background:
-            linear-gradient(
-                180deg,
-                #111111 0%,
-                #181818 60%,
-                #0d0d0d 100%
-            ) !important;
-
-        border-right: 1px solid #ff5a28 !important;
+        background: #171717 !important;
+        border-right: 0 !important;
     }
 
-    [data-testid="stSidebar"] h2 {
-        color: #ffffff !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 1.05rem !important;
-        text-transform: none !important;
-        letter-spacing: -0.3px !important;
-    }
-
+    [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3 {
-        color: #ff7040 !important;
-        font-family: 'Poppins', sans-serif !important;
+        color: #ffffff !important;
+        font-family: 'Space Grotesk', sans-serif !important;
         font-weight: 700 !important;
-        font-size: 0.75rem !important;
-        letter-spacing: 1px !important;
+        font-size: 0.82rem !important;
         text-transform: uppercase !important;
+        letter-spacing: 1px !important;
     }
 
     [data-testid="stSidebar"] label {
-        color: #ffffff !important;
-        font-size: 0.82rem !important;
+        color: #d6d6d6 !important;
+        font-size: 0.84rem !important;
         font-weight: 500 !important;
     }
 
     [data-testid="stSidebar"] p {
-        color: #d7d7d7 !important;
-        font-size: 0.82rem !important;
+        color: #b8b8b8 !important;
+        font-size: 0.87rem !important;
     }
 
     [data-testid="stSidebar"] hr {
@@ -140,580 +89,260 @@ st.markdown("""
         margin: 18px 0 !important;
     }
 
+    [data-testid="stSidebar"] [data-baseweb="radio"] label,
+    [data-testid="stSidebar"] [data-baseweb="checkbox"] label {
+        color: #eeeeee !important;
+    }
 
-    /* =====================================================
-       INPUTS
-       ===================================================== */
-
-    textarea,
-    input[type="text"] {
-        background: #242424 !important;
-
-        border: 1px solid #3d3d3d !important;
-
-        border-radius: 13px !important;
-
+    textarea, input[type="text"] {
+        background: #252525 !important;
+        border: 1px solid #444 !important;
+        border-radius: 12px !important;
         color: #ffffff !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
-        font-size: 0.84rem !important;
-
-        box-shadow:
-            0 4px 12px rgba(0,0,0,0.18) !important;
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: 0.9rem !important;
     }
 
     textarea::placeholder,
-    input::placeholder {
-        color: #9d9d9d !important;
+    input[type="text"]::placeholder {
+        color: #8e8e8e !important;
     }
 
-    textarea:focus,
-    input[type="text"]:focus {
-        border-color: #ff5b2b !important;
-
-        box-shadow:
-            0 0 0 2px rgba(255,91,43,0.20) !important;
+    textarea:focus, input[type="text"]:focus {
+        border-color: var(--coral) !important;
+        box-shadow: 0 0 0 3px rgba(255,90,79,0.18) !important;
     }
-
-
-    /* =====================================================
-       SELECTBOX
-       ===================================================== */
 
     [data-baseweb="select"] > div {
-        background: #242424 !important;
-
-        border: 1px solid #3d3d3d !important;
-
+        background: #252525 !important;
+        border: 1px solid #444 !important;
         border-radius: 12px !important;
-
         color: #ffffff !important;
-
-        font-size: 0.82rem !important;
+        font-size: 0.9rem !important;
     }
 
-    [data-baseweb="select"] span {
-        color: #ffffff !important;
+    [data-baseweb="select"] svg {
+        fill: #ff8a7f !important;
     }
 
+    h1, h2, h3 {
+        font-family: 'Space Grotesk', sans-serif !important;
+        color: var(--ink) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.6px !important;
+    }
 
-    /* =====================================================
-       BOTONES PRINCIPALES
-       ===================================================== */
+    p, li {
+        color: #3f3f46 !important;
+        font-size: 0.95rem !important;
+        line-height: 1.65 !important;
+    }
 
     .stButton > button {
-        background:
-            linear-gradient(
-                135deg,
-                #ff7040 0%,
-                #ff4f22 100%
-            ) !important;
-
+        background: linear-gradient(135deg, var(--coral) 0%, var(--orange) 100%) !important;
         color: #ffffff !important;
-
-        border: none !important;
-
-        border-radius: 13px !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
+        border: 0 !important;
+        border-radius: 12px !important;
+        font-family: 'Space Grotesk', sans-serif !important;
         font-weight: 700 !important;
-
-        font-size: 0.83rem !important;
-
+        font-size: 0.88rem !important;
         letter-spacing: 0.2px !important;
-
-        padding: 0.72rem 1.3rem !important;
-
+        padding: 0.72rem 1.4rem !important;
         min-height: 44px !important;
-
-        box-shadow:
-            0 6px 18px rgba(0,0,0,0.25) !important;
-
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            background 0.2s ease !important;
+        box-shadow: 0 8px 20px rgba(255,90,79,0.20) !important;
+        transition: transform 0.18s ease, box-shadow 0.18s ease !important;
     }
 
     .stButton > button:hover {
-        background:
-            linear-gradient(
-                135deg,
-                #ff8155 0%,
-                #ff5727 100%
-            ) !important;
-
-        color: #ffffff !important;
-
-        transform: translateY(-2px) !important;
-
-        box-shadow:
-            0 9px 24px rgba(0,0,0,0.32) !important;
+        background: linear-gradient(135deg, var(--coral-dark) 0%, #f06435 100%) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 11px 25px rgba(255,90,79,0.28) !important;
     }
 
     .stButton > button:active {
-        transform: translateY(0px) !important;
+        transform: translateY(0);
     }
 
-
-    /* =====================================================
-       BOTONES DE DESCARGA
-       ===================================================== */
-
     [data-testid="stDownloadButton"] button {
-        background: #ff5728 !important;
-
+        background: #171717 !important;
         color: #ffffff !important;
-
-        border: none !important;
-
+        border: 0 !important;
         border-radius: 12px !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
+        font-family: 'Space Grotesk', sans-serif !important;
         font-weight: 700 !important;
-
-        font-size: 0.82rem !important;
-
-        min-height: 42px !important;
-
-        box-shadow:
-            0 5px 15px rgba(0,0,0,0.22) !important;
+        font-size: 0.88rem !important;
+        min-height: 44px !important;
+        transition: background 0.18s ease, transform 0.18s ease !important;
     }
 
     [data-testid="stDownloadButton"] button:hover {
-        background: #ff7043 !important;
-
-        color: #ffffff !important;
-
-        transform: translateY(-1px) !important;
+        background: #303030 !important;
+        transform: translateY(-1px);
     }
 
+    [data-testid="metric-container"] {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-top: 4px solid var(--coral);
+        border-radius: 16px;
+        padding: 18px 22px;
+        box-shadow: 0 8px 24px rgba(48, 30, 25, 0.06);
+    }
 
-    /* =====================================================
-       HEADER
-       ===================================================== */
+    [data-testid="metric-container"] label {
+        color: #8a6f69 !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.7px !important;
+    }
+
+    [data-testid="metric-container"] [data-testid="stMetricValue"] {
+        color: var(--ink) !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 1.55rem !important;
+    }
 
     .header-card {
         background:
-            linear-gradient(
-                135deg,
-                #171717 0%,
-                #222222 100%
-            ) !important;
-
-        border: 1px solid #353535 !important;
-
-        border-left: 6px solid #ff5728 !important;
-
-        border-radius: 22px !important;
-
-        padding: 30px 36px !important;
-
-        margin-bottom: 24px !important;
-
-        box-shadow:
-            0 12px 30px rgba(0,0,0,0.25) !important;
-
+            radial-gradient(circle at 90% 0%, rgba(255,255,255,0.18), transparent 30%),
+            linear-gradient(135deg, #171717 0%, #292929 100%);
+        border: 0;
+        border-radius: 22px;
+        padding: 30px 36px;
+        margin-bottom: 24px;
+        box-shadow: 0 16px 36px rgba(23,23,23,0.14);
         position: relative;
-
         overflow: hidden;
     }
 
     .header-card::after {
         content: "";
-
         position: absolute;
-
         width: 170px;
         height: 170px;
-
-        right: -60px;
-        top: -80px;
-
         border-radius: 50%;
-
-        background:
-            radial-gradient(
-                circle,
-                rgba(255,94,43,0.45),
-                rgba(255,94,43,0)
-            );
+        right: -45px;
+        top: -65px;
+        background: rgba(255,90,79,0.28);
     }
 
     .header-card h1 {
         color: #ffffff !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
-        font-weight: 800 !important;
-
-        letter-spacing: -1px !important;
-
         position: relative;
-
-        z-index: 2;
+        z-index: 1;
     }
 
     .header-card p {
-        color: #cfcfcf !important;
-
+        color: #d2d2d2 !important;
         position: relative;
-
-        z-index: 2;
+        z-index: 1;
     }
-
-
-    /* =====================================================
-       TARJETAS
-       ===================================================== */
 
     .section-card {
-        background:
-            linear-gradient(
-                145deg,
-                #171717 0%,
-                #222222 100%
-            ) !important;
-
-        border: 1px solid #343434 !important;
-
-        border-radius: 20px !important;
-
-        padding: 25px 28px !important;
-
-        margin-bottom: 17px !important;
-
-        box-shadow:
-            0 10px 25px rgba(0,0,0,0.23) !important;
+        background: rgba(255,255,255,0.92);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 24px 28px;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 24px rgba(48,30,25,0.05);
     }
-
-    .section-card h3,
-    .section-card h4 {
-        color: #ffffff !important;
-    }
-
-
-    /* =====================================================
-       ITEMS DE INFORMACIÓN
-       ===================================================== */
-
-    .info-item {
-        display: flex;
-
-        align-items: flex-start;
-
-        gap: 13px;
-
-        padding: 13px 16px;
-
-        background: #252525 !important;
-
-        border: 1px solid #383838 !important;
-
-        border-radius: 13px;
-
-        margin-bottom: 9px;
-
-        transition:
-            transform 0.2s ease,
-            background 0.2s ease;
-    }
-
-    .info-item:hover {
-        background: #2d2d2d !important;
-
-        transform: translateY(-1px);
-    }
-
-
-    /* =====================================================
-       ETIQUETAS
-       ===================================================== */
-
-    .uso-tag {
-        display: inline-block;
-
-        background:
-            rgba(255,87,40,0.13) !important;
-
-        border: 1px solid #914025 !important;
-
-        border-radius: 30px;
-
-        padding: 7px 14px;
-
-        font-size: 0.76rem;
-
-        font-weight: 500;
-
-        color: #ffffff !important;
-
-        margin: 4px 3px;
-    }
-
-
-    /* =====================================================
-       MÉTRICAS
-       ===================================================== */
-
-    [data-testid="metric-container"] {
-        background:
-            linear-gradient(
-                145deg,
-                #171717 0%,
-                #252525 100%
-            ) !important;
-
-        border: 1px solid #383838 !important;
-
-        border-top: 4px solid #ff5728 !important;
-
-        border-radius: 17px !important;
-
-        padding: 18px 20px !important;
-
-        box-shadow:
-            0 8px 22px rgba(0,0,0,0.25) !important;
-
-        overflow: hidden;
-    }
-
-    [data-testid="metric-container"] label {
-        color: #a9a9a9 !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
-        font-size: 0.68rem !important;
-
-        font-weight: 600 !important;
-
-        text-transform: uppercase !important;
-
-        letter-spacing: 0.7px !important;
-    }
-
-    [data-testid="metric-container"] [data-testid="stMetricValue"] {
-        color: #ffffff !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
-        font-weight: 800 !important;
-
-        font-size: 1.45rem !important;
-    }
-
-
-    /* =====================================================
-       NUBE DE PALABRAS
-       ===================================================== */
-
-    .wc-container {
-        background:
-            linear-gradient(
-                145deg,
-                #151515 0%,
-                #222222 100%
-            ) !important;
-
-        border: 1px solid #363636 !important;
-
-        border-radius: 22px !important;
-
-        padding: 22px !important;
-
-        box-shadow:
-            0 10px 28px rgba(0,0,0,0.27) !important;
-
-        margin-bottom: 16px !important;
-    }
-
-    .wc-container strong {
-        color: #ffffff !important;
-    }
-
-
-    /* =====================================================
-       BARRAS DE FRECUENCIA
-       ===================================================== */
 
     .freq-row {
         display: flex;
-
         align-items: center;
-
         gap: 14px;
-
         padding: 8px 14px;
-
         margin: 5px 0;
-
-        background: #1c1c1c !important;
-
-        border: 1px solid #333333 !important;
-
-        border-radius: 12px;
-
-        transition:
-            background 0.2s ease,
-            transform 0.2s ease;
+        background: #ffffff;
+        border: 1px solid #f2dfda;
+        border-radius: 10px;
+        transition: transform 0.15s, background 0.15s, border-color 0.15s;
     }
 
     .freq-row:hover {
-        background: #292929 !important;
-
+        background: #fff5f2;
+        border-color: #ffc9bf;
         transform: translateX(2px);
     }
 
     .freq-bar {
-        height: 8px;
-
-        background:
-            linear-gradient(
-                90deg,
-                #ff7a48,
-                #ff4f22
-            ) !important;
-
-        border-radius: 10px;
-
+        height: 9px;
+        background: linear-gradient(90deg, var(--coral), var(--orange));
+        border-radius: 99px;
         display: inline-block;
-
         vertical-align: middle;
     }
 
-
-    /* =====================================================
-       RANKING
-       ===================================================== */
-
     .rank-tag {
-        background: #302018 !important;
-
-        border: 1px solid #71331f !important;
-
-        border-radius: 8px;
-
+        background: #fff0ec;
+        border: 1px solid #ffd3ca;
+        border-radius: 7px;
         padding: 2px 8px;
-
-        font-size: 0.68rem;
-
+        font-size: 0.72rem;
         font-weight: 700;
-
-        color: #ff9b75 !important;
-
-        font-family: 'Poppins', sans-serif;
-
-        min-width: 38px;
-
+        color: #d9483e;
+        font-family: 'Space Grotesk', sans-serif;
+        min-width: 36px;
         text-align: center;
     }
 
-
-    /* =====================================================
-       TABLA
-       ===================================================== */
-
-    [data-testid="stDataFrame"] {
-        border-radius: 15px !important;
-
-        overflow: hidden !important;
-
-        border: 1px solid #383838 !important;
-
-        box-shadow:
-            0 7px 20px rgba(0,0,0,0.22) !important;
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 13px 16px;
+        background: #fff8f5;
+        border: 1px solid #f5ddd7;
+        border-radius: 10px;
+        margin-bottom: 8px;
     }
 
-
-    /* =====================================================
-       EXPANDER
-       ===================================================== */
+    .uso-tag {
+        display: inline-block;
+        background: #fff1ed;
+        border: 1px solid #ffd4cb;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #c94238;
+        margin: 4px 3px;
+    }
 
     div[data-testid="stExpander"] {
-        border: 1px solid #383838 !important;
-
-        border-radius: 15px !important;
-
-        background: #191919 !important;
-
-        box-shadow:
-            0 7px 20px rgba(0,0,0,0.20) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
     }
-
-    div[data-testid="stExpander"] summary {
-        color: #ffffff !important;
-
-        font-weight: 600 !important;
-    }
-
-
-    /* =====================================================
-       RADIO BUTTONS
-       ===================================================== */
-
-    [data-testid="stRadio"] label {
-        color: #ffffff !important;
-    }
-
-
-    /* =====================================================
-       SLIDER
-       ===================================================== */
-
-    [data-testid="stSlider"] {
-        color: #ff5728 !important;
-    }
-
-
-    /* =====================================================
-       ALERTAS
-       ===================================================== */
-
-    [data-testid="stAlert"] {
-        border-radius: 13px !important;
-
-        background: #222222 !important;
-
-        border: 1px solid #ff5728 !important;
-
-        color: #ffffff !important;
-    }
-
-
-    /* =====================================================
-       DIVISORES
-       ===================================================== */
 
     hr {
-        border-color: rgba(255,255,255,0.15) !important;
+        border-color: #efdcd7 !important;
     }
 
-
-    /* =====================================================
-       SCROLLBAR
-       ===================================================== */
-
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+    .wc-container {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 28px rgba(48,30,25,0.06);
+        margin-bottom: 16px;
     }
 
-    ::-webkit-scrollbar-track {
-        background: #171717;
+    [data-testid="stFileUploader"] section {
+        background: #252525 !important;
+        border: 1px dashed #666 !important;
+        border-radius: 12px !important;
     }
 
-    ::-webkit-scrollbar-thumb {
-        background: #ff5728;
-        border-radius: 10px;
+    [data-testid="stFileUploader"] small {
+        color: #aaa !important;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #ff784c;
+    [data-testid="stAlert"] {
+        border-radius: 12px !important;
     }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -909,7 +538,7 @@ with st.sidebar:
     max_words   = st.slider("Máximo de palabras:", 20, 200, 80)
 
     st.divider()
-    generar = st.button("GENERAR NUBE  ↗", use_container_width=True)
+    generar = st.button("GENERAR NUBE  →", use_container_width=True)
 
 
 # ─────────────────────────────────────────────
