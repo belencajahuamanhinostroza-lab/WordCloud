@@ -29,7 +29,7 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# ESTILOS — interfaz moderna azul / lila
+# ESTILOS — NARANJA / NEGRO / BLANCO
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -38,17 +38,55 @@ st.markdown("""
        TIPOGRAFÍA
        ===================================================== */
 
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Poppins', sans-serif !important;
     }
 
+
+    /* =====================================================
+       FONDO GENERAL
+       ===================================================== */
+
     .stApp {
         background:
-            radial-gradient(circle at 85% 5%, rgba(155, 185, 255, 0.25), transparent 25%),
-            radial-gradient(circle at 10% 30%, rgba(200, 180, 255, 0.18), transparent 25%),
-            #f8faff;
+            radial-gradient(
+                circle at 90% 0%,
+                #ff8a4c 0%,
+                #ff642f 35%,
+                #f4511e 70%,
+                #e94717 100%
+            ) !important;
+
+        color: #ffffff !important;
+    }
+
+    .main {
+        background: transparent !important;
+    }
+
+
+    /* =====================================================
+       TEXTO GENERAL
+       ===================================================== */
+
+    p,
+    li,
+    span,
+    label {
+        color: #ffffff !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #ffffff !important;
+        font-family: 'Poppins', sans-serif !important;
     }
 
 
@@ -60,45 +98,45 @@ st.markdown("""
         background:
             linear-gradient(
                 180deg,
-                #ffffff 0%,
-                #f4f7ff 55%,
-                #eef3ff 100%
+                #111111 0%,
+                #181818 60%,
+                #0d0d0d 100%
             ) !important;
 
-        border-right: 1px solid #e1e8f8 !important;
+        border-right: 1px solid #ff5a28 !important;
     }
 
     [data-testid="stSidebar"] h2 {
-        color: #202a44 !important;
+        color: #ffffff !important;
         font-family: 'Poppins', sans-serif !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         font-size: 1.05rem !important;
-        letter-spacing: -0.3px !important;
         text-transform: none !important;
+        letter-spacing: -0.3px !important;
     }
 
     [data-testid="stSidebar"] h3 {
-        color: #536180 !important;
+        color: #ff7040 !important;
         font-family: 'Poppins', sans-serif !important;
-        font-weight: 600 !important;
-        font-size: 0.78rem !important;
-        letter-spacing: 0.8px !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        letter-spacing: 1px !important;
         text-transform: uppercase !important;
     }
 
     [data-testid="stSidebar"] label {
-        color: #536180 !important;
+        color: #ffffff !important;
         font-size: 0.82rem !important;
         font-weight: 500 !important;
     }
 
     [data-testid="stSidebar"] p {
-        color: #71809d !important;
-        font-size: 0.84rem !important;
+        color: #d7d7d7 !important;
+        font-size: 0.82rem !important;
     }
 
     [data-testid="stSidebar"] hr {
-        border-color: #dfe6f5 !important;
+        border-color: #343434 !important;
         margin: 18px 0 !important;
     }
 
@@ -109,26 +147,33 @@ st.markdown("""
 
     textarea,
     input[type="text"] {
-        background: #ffffff !important;
-        border: 1px solid #dce4f5 !important;
-        border-radius: 14px !important;
-        color: #202a44 !important;
+        background: #242424 !important;
+
+        border: 1px solid #3d3d3d !important;
+
+        border-radius: 13px !important;
+
+        color: #ffffff !important;
+
         font-family: 'Poppins', sans-serif !important;
-        font-size: 0.86rem !important;
-        box-shadow: 0 3px 12px rgba(74, 104, 170, 0.05) !important;
+
+        font-size: 0.84rem !important;
+
+        box-shadow:
+            0 4px 12px rgba(0,0,0,0.18) !important;
     }
 
     textarea::placeholder,
     input::placeholder {
-        color: #a0abc0 !important;
+        color: #9d9d9d !important;
     }
 
     textarea:focus,
     input[type="text"]:focus {
-        border-color: #7d9cff !important;
+        border-color: #ff5b2b !important;
+
         box-shadow:
-            0 0 0 3px rgba(125, 156, 255, 0.13),
-            0 4px 14px rgba(74, 104, 170, 0.08) !important;
+            0 0 0 2px rgba(255,91,43,0.20) !important;
     }
 
 
@@ -137,48 +182,19 @@ st.markdown("""
        ===================================================== */
 
     [data-baseweb="select"] > div {
-        background: #ffffff !important;
-        border: 1px solid #dce4f5 !important;
+        background: #242424 !important;
+
+        border: 1px solid #3d3d3d !important;
+
         border-radius: 12px !important;
-        color: #202a44 !important;
-        font-size: 0.84rem !important;
-        box-shadow: 0 2px 10px rgba(74, 104, 170, 0.04) !important;
+
+        color: #ffffff !important;
+
+        font-size: 0.82rem !important;
     }
 
-    [data-baseweb="select"] > div:hover {
-        border-color: #9ab2ff !important;
-    }
-
-
-    /* =====================================================
-       TÍTULOS
-       ===================================================== */
-
-    h1 {
-        font-family: 'Poppins', sans-serif !important;
-        color: #202a44 !important;
-        font-weight: 700 !important;
-        letter-spacing: -1px !important;
-    }
-
-    h2 {
-        font-family: 'Poppins', sans-serif !important;
-        color: #26324f !important;
-        font-weight: 700 !important;
-    }
-
-    h3 {
-        font-family: 'Poppins', sans-serif !important;
-        color: #35415f !important;
-        font-weight: 600 !important;
-    }
-
-    p,
-    li {
-        color: #687694 !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-size: 0.88rem !important;
-        line-height: 1.7 !important;
+    [data-baseweb="select"] span {
+        color: #ffffff !important;
     }
 
 
@@ -187,49 +203,54 @@ st.markdown("""
        ===================================================== */
 
     .stButton > button {
-        background: linear-gradient(
-            135deg,
-            #658cff 0%,
-            #8069ed 100%
-        ) !important;
+        background:
+            linear-gradient(
+                135deg,
+                #ff7040 0%,
+                #ff4f22 100%
+            ) !important;
 
         color: #ffffff !important;
 
         border: none !important;
-        border-radius: 14px !important;
+
+        border-radius: 13px !important;
 
         font-family: 'Poppins', sans-serif !important;
-        font-weight: 600 !important;
-        font-size: 0.84rem !important;
 
-        letter-spacing: 0.1px !important;
+        font-weight: 700 !important;
+
+        font-size: 0.83rem !important;
+
+        letter-spacing: 0.2px !important;
 
         padding: 0.72rem 1.3rem !important;
 
         min-height: 44px !important;
 
         box-shadow:
-            0 6px 18px rgba(104, 126, 235, 0.28) !important;
+            0 6px 18px rgba(0,0,0,0.25) !important;
 
         transition:
             transform 0.2s ease,
             box-shadow 0.2s ease,
-            filter 0.2s ease !important;
+            background 0.2s ease !important;
     }
 
     .stButton > button:hover {
-        background: linear-gradient(
-            135deg,
-            #557dff 0%,
-            #735ce5 100%
-        ) !important;
+        background:
+            linear-gradient(
+                135deg,
+                #ff8155 0%,
+                #ff5727 100%
+            ) !important;
 
         color: #ffffff !important;
 
         transform: translateY(-2px) !important;
 
         box-shadow:
-            0 9px 24px rgba(104, 126, 235, 0.35) !important;
+            0 9px 24px rgba(0,0,0,0.32) !important;
     }
 
     .stButton > button:active {
@@ -238,133 +259,65 @@ st.markdown("""
 
 
     /* =====================================================
-       BOTÓN DE DESCARGA
+       BOTONES DE DESCARGA
        ===================================================== */
 
     [data-testid="stDownloadButton"] button {
-        background: #ffffff !important;
+        background: #ff5728 !important;
 
-        color: #566bdb !important;
+        color: #ffffff !important;
 
-        border: 1px solid #d5def8 !important;
-        border-radius: 13px !important;
+        border: none !important;
 
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 600 !important;
-        font-size: 0.82rem !important;
-
-        min-height: 42px !important;
-
-        box-shadow:
-            0 4px 14px rgba(74, 104, 170, 0.08) !important;
-
-        transition:
-            background 0.2s ease,
-            border 0.2s ease,
-            transform 0.2s ease !important;
-    }
-
-    [data-testid="stDownloadButton"] button:hover {
-        background: #f1f4ff !important;
-        color: #4659c4 !important;
-        border-color: #aebeff !important;
-        transform: translateY(-1px) !important;
-    }
-
-
-    /* =====================================================
-       MÉTRICAS
-       ===================================================== */
-
-    [data-testid="metric-container"] {
-        background:
-            linear-gradient(
-                145deg,
-                #ffffff 0%,
-                #f7f9ff 100%
-            );
-
-        border: 1px solid #e1e7f5;
-
-        border-radius: 18px;
-
-        padding: 18px 20px;
-
-        box-shadow:
-            0 6px 20px rgba(65, 91, 150, 0.07);
-
-        position: relative;
-
-        overflow: hidden;
-    }
-
-    [data-testid="metric-container"]::before {
-        content: "";
-        position: absolute;
-
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 4px;
-
-        background: linear-gradient(
-            90deg,
-            #6c91ff,
-            #8b70ed
-        );
-    }
-
-    [data-testid="metric-container"] label {
-        color: #8792a9 !important;
-
-        font-family: 'Poppins', sans-serif !important;
-
-        font-size: 0.68rem !important;
-
-        font-weight: 600 !important;
-
-        text-transform: uppercase !important;
-
-        letter-spacing: 0.7px !important;
-    }
-
-    [data-testid="metric-container"] [data-testid="stMetricValue"] {
-        color: #202a44 !important;
+        border-radius: 12px !important;
 
         font-family: 'Poppins', sans-serif !important;
 
         font-weight: 700 !important;
 
-        font-size: 1.45rem !important;
+        font-size: 0.82rem !important;
+
+        min-height: 42px !important;
+
+        box-shadow:
+            0 5px 15px rgba(0,0,0,0.22) !important;
+    }
+
+    [data-testid="stDownloadButton"] button:hover {
+        background: #ff7043 !important;
+
+        color: #ffffff !important;
+
+        transform: translateY(-1px) !important;
     }
 
 
     /* =====================================================
-       HEADER PRINCIPAL
+       HEADER
        ===================================================== */
 
     .header-card {
-        position: relative;
-
         background:
             linear-gradient(
                 135deg,
-                #ffffff 0%,
-                #f1f5ff 55%,
-                #edf0ff 100%
-            );
+                #171717 0%,
+                #222222 100%
+            ) !important;
 
-        border: 1px solid #e0e7f7;
+        border: 1px solid #353535 !important;
 
-        border-radius: 24px;
+        border-left: 6px solid #ff5728 !important;
 
-        padding: 32px 38px;
+        border-radius: 22px !important;
 
-        margin-bottom: 25px;
+        padding: 30px 36px !important;
+
+        margin-bottom: 24px !important;
 
         box-shadow:
-            0 10px 30px rgba(67, 92, 153, 0.08);
+            0 12px 30px rgba(0,0,0,0.25) !important;
+
+        position: relative;
 
         overflow: hidden;
     }
@@ -374,8 +327,8 @@ st.markdown("""
 
         position: absolute;
 
-        width: 180px;
-        height: 180px;
+        width: 170px;
+        height: 170px;
 
         right: -60px;
         top: -80px;
@@ -385,17 +338,19 @@ st.markdown("""
         background:
             radial-gradient(
                 circle,
-                rgba(122, 150, 255, 0.28),
-                rgba(122, 150, 255, 0)
+                rgba(255,94,43,0.45),
+                rgba(255,94,43,0)
             );
     }
 
     .header-card h1 {
-        color: #202a44 !important;
+        color: #ffffff !important;
 
-        font-size: 1.9rem !important;
+        font-family: 'Poppins', sans-serif !important;
 
-        font-weight: 700 !important;
+        font-weight: 800 !important;
+
+        letter-spacing: -1px !important;
 
         position: relative;
 
@@ -403,7 +358,7 @@ st.markdown("""
     }
 
     .header-card p {
-        color: #71809d !important;
+        color: #cfcfcf !important;
 
         position: relative;
 
@@ -416,22 +371,28 @@ st.markdown("""
        ===================================================== */
 
     .section-card {
-        background: rgba(255,255,255,0.94);
+        background:
+            linear-gradient(
+                145deg,
+                #171717 0%,
+                #222222 100%
+            ) !important;
 
-        border: 1px solid #e1e7f4;
+        border: 1px solid #343434 !important;
 
-        border-radius: 20px;
+        border-radius: 20px !important;
 
-        padding: 25px 28px;
+        padding: 25px 28px !important;
 
-        margin-bottom: 17px;
+        margin-bottom: 17px !important;
 
         box-shadow:
-            0 7px 24px rgba(67, 92, 153, 0.06);
+            0 10px 25px rgba(0,0,0,0.23) !important;
     }
 
-    .section-card h3 {
-        color: #26324f !important;
+    .section-card h3,
+    .section-card h4 {
+        color: #ffffff !important;
     }
 
 
@@ -448,29 +409,23 @@ st.markdown("""
 
         padding: 13px 16px;
 
-        background:
-            linear-gradient(
-                135deg,
-                #ffffff,
-                #f6f8ff
-            );
+        background: #252525 !important;
 
-        border: 1px solid #e5eaf6;
+        border: 1px solid #383838 !important;
 
-        border-radius: 14px;
+        border-radius: 13px;
 
         margin-bottom: 9px;
 
         transition:
             transform 0.2s ease,
-            box-shadow 0.2s ease;
+            background 0.2s ease;
     }
 
     .info-item:hover {
-        transform: translateY(-1px);
+        background: #2d2d2d !important;
 
-        box-shadow:
-            0 5px 15px rgba(72, 96, 160, 0.08);
+        transform: translateY(-1px);
     }
 
 
@@ -482,35 +437,72 @@ st.markdown("""
         display: inline-block;
 
         background:
-            linear-gradient(
-                135deg,
-                #f0f4ff,
-                #f4f0ff
-            );
+            rgba(255,87,40,0.13) !important;
 
-        border: 1px solid #dce3f8;
+        border: 1px solid #914025 !important;
 
         border-radius: 30px;
 
         padding: 7px 14px;
 
-        font-size: 0.78rem;
+        font-size: 0.76rem;
 
         font-weight: 500;
 
-        color: #596b9a;
+        color: #ffffff !important;
 
         margin: 4px 3px;
-
-        transition:
-            background 0.2s ease,
-            transform 0.2s ease;
     }
 
-    .uso-tag:hover {
-        background: #e9efff;
 
-        transform: translateY(-1px);
+    /* =====================================================
+       MÉTRICAS
+       ===================================================== */
+
+    [data-testid="metric-container"] {
+        background:
+            linear-gradient(
+                145deg,
+                #171717 0%,
+                #252525 100%
+            ) !important;
+
+        border: 1px solid #383838 !important;
+
+        border-top: 4px solid #ff5728 !important;
+
+        border-radius: 17px !important;
+
+        padding: 18px 20px !important;
+
+        box-shadow:
+            0 8px 22px rgba(0,0,0,0.25) !important;
+
+        overflow: hidden;
+    }
+
+    [data-testid="metric-container"] label {
+        color: #a9a9a9 !important;
+
+        font-family: 'Poppins', sans-serif !important;
+
+        font-size: 0.68rem !important;
+
+        font-weight: 600 !important;
+
+        text-transform: uppercase !important;
+
+        letter-spacing: 0.7px !important;
+    }
+
+    [data-testid="metric-container"] [data-testid="stMetricValue"] {
+        color: #ffffff !important;
+
+        font-family: 'Poppins', sans-serif !important;
+
+        font-weight: 800 !important;
+
+        font-size: 1.45rem !important;
     }
 
 
@@ -522,20 +514,24 @@ st.markdown("""
         background:
             linear-gradient(
                 145deg,
-                #ffffff 0%,
-                #f6f8ff 100%
-            );
+                #151515 0%,
+                #222222 100%
+            ) !important;
 
-        border: 1px solid #e0e7f5;
+        border: 1px solid #363636 !important;
 
-        border-radius: 22px;
+        border-radius: 22px !important;
 
-        padding: 22px;
+        padding: 22px !important;
 
         box-shadow:
-            0 8px 25px rgba(67, 92, 153, 0.07);
+            0 10px 28px rgba(0,0,0,0.27) !important;
 
-        margin-bottom: 16px;
+        margin-bottom: 16px !important;
+    }
+
+    .wc-container strong {
+        color: #ffffff !important;
     }
 
 
@@ -554,25 +550,21 @@ st.markdown("""
 
         margin: 5px 0;
 
-        background: #ffffff;
+        background: #1c1c1c !important;
 
-        border: 1px solid #e8ecf5;
+        border: 1px solid #333333 !important;
 
         border-radius: 12px;
 
         transition:
             background 0.2s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
+            transform 0.2s ease;
     }
 
     .freq-row:hover {
-        background: #f5f7ff;
+        background: #292929 !important;
 
         transform: translateX(2px);
-
-        box-shadow:
-            0 4px 12px rgba(67, 92, 153, 0.06);
     }
 
     .freq-bar {
@@ -581,9 +573,9 @@ st.markdown("""
         background:
             linear-gradient(
                 90deg,
-                #7195ff,
-                #8b72eb
-            );
+                #ff7a48,
+                #ff4f22
+            ) !important;
 
         border-radius: 10px;
 
@@ -598,9 +590,9 @@ st.markdown("""
        ===================================================== */
 
     .rank-tag {
-        background: #eef2ff;
+        background: #302018 !important;
 
-        border: 1px solid #dce3fb;
+        border: 1px solid #71331f !important;
 
         border-radius: 8px;
 
@@ -610,7 +602,7 @@ st.markdown("""
 
         font-weight: 700;
 
-        color: #6475b3;
+        color: #ff9b75 !important;
 
         font-family: 'Poppins', sans-serif;
 
@@ -621,49 +613,40 @@ st.markdown("""
 
 
     /* =====================================================
-       EXPANDER
-       ===================================================== */
-
-    div[data-testid="stExpander"] {
-        border: 1px solid #e0e7f5 !important;
-
-        border-radius: 16px !important;
-
-        background: #ffffff !important;
-
-        box-shadow:
-            0 5px 18px rgba(67, 92, 153, 0.05) !important;
-    }
-
-    div[data-testid="stExpander"] summary {
-        color: #4d5d82 !important;
-
-        font-weight: 600 !important;
-    }
-
-
-    /* =====================================================
        TABLA
        ===================================================== */
 
     [data-testid="stDataFrame"] {
-        border-radius: 14px !important;
+        border-radius: 15px !important;
 
         overflow: hidden !important;
 
-        border: 1px solid #e1e7f4 !important;
+        border: 1px solid #383838 !important;
 
         box-shadow:
-            0 4px 15px rgba(67, 92, 153, 0.05) !important;
+            0 7px 20px rgba(0,0,0,0.22) !important;
     }
 
 
     /* =====================================================
-       DIVISORES
+       EXPANDER
        ===================================================== */
 
-    hr {
-        border-color: #e1e7f4 !important;
+    div[data-testid="stExpander"] {
+        border: 1px solid #383838 !important;
+
+        border-radius: 15px !important;
+
+        background: #191919 !important;
+
+        box-shadow:
+            0 7px 20px rgba(0,0,0,0.20) !important;
+    }
+
+    div[data-testid="stExpander"] summary {
+        color: #ffffff !important;
+
+        font-weight: 600 !important;
     }
 
 
@@ -672,7 +655,7 @@ st.markdown("""
        ===================================================== */
 
     [data-testid="stRadio"] label {
-        color: #566582 !important;
+        color: #ffffff !important;
     }
 
 
@@ -681,7 +664,7 @@ st.markdown("""
        ===================================================== */
 
     [data-testid="stSlider"] {
-        padding-top: 5px;
+        color: #ff5728 !important;
     }
 
 
@@ -690,10 +673,49 @@ st.markdown("""
        ===================================================== */
 
     [data-testid="stAlert"] {
-        border-radius: 14px !important;
+        border-radius: 13px !important;
 
-        border: 1px solid #dce5fa !important;
+        background: #222222 !important;
+
+        border: 1px solid #ff5728 !important;
+
+        color: #ffffff !important;
     }
+
+
+    /* =====================================================
+       DIVISORES
+       ===================================================== */
+
+    hr {
+        border-color: rgba(255,255,255,0.15) !important;
+    }
+
+
+    /* =====================================================
+       SCROLLBAR
+       ===================================================== */
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #171717;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #ff5728;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ff784c;
+    }
+
+</style>
+""", unsafe_allow_html=True)
 
 
     /* =====================================================
